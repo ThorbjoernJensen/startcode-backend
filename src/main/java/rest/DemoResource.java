@@ -163,7 +163,7 @@ public class DemoResource {
     @POST
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    @Path("cityInfo")
+    @Path("cityinfo")
 //    @RolesAllowed({"user", "admin"})
     public String getCityInfo(String cityName) throws IOException, ExecutionException, InterruptedException {
         String query;
