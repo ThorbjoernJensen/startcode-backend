@@ -7,6 +7,7 @@ import com.google.gson.JsonParser;
 import dtos.ComboDTO;
 import dtos.PokemonDTO;
 import dtos.RandomFactDTO;
+import dtos.WeatherDTO;
 import entities.User;
 
 import java.io.IOException;
@@ -28,10 +29,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.SecurityContext;
 
 import facades.UserFacade;
-import utils.EMF_Creator;
-import utils.FactFetcher;
-import utils.HttpUtils;
-import utils.PokemonFetcher;
+import utils.*;
 
 
 /**
@@ -160,6 +158,28 @@ public class DemoResource {
             comboDTOs.add(new ComboDTO(pokemonDTO, randomFactDTO));
         }
         return GSON.toJson(comboDTOs);
+    }
+
+    @POST
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Path("cityInfo")
+//    @RolesAllowed({"user", "admin"})
+    public String getCityInfo(String cityName) throws IOException, ExecutionException, InterruptedException {
+        String query;
+        WeatherDTO weatherDTO;
+//        RandomFactDTO randomFactDTO;
+        JsonObject json = JsonParser.parseString(cityName).getAsJsonObject();
+        query = json.get("query").getAsString();
+        ExecutorService executor = Executors.newCachedThreadPool();
+        Future<WeatherDTO> futureW = executor.submit(() -> CityWeatherFetcher.getData(query));
+
+//        Future<RandomFactDTO> futureRNDF = executor.submit(FactFetcher::getFact);
+        weatherDTO = futureW.get();
+        System.out.println("fra endpoint: " + weatherDTO.toString());
+//        randomFactDTO = futureRNDF.get();
+        return GSON.toJson(weatherDTO);
+//        return GSON.toJson(new ComboDTO(pokemonDTO, randomFactDTO));
     }
 
     @POST

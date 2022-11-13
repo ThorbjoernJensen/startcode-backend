@@ -24,3 +24,11 @@ Content-Type: application/json
 {
 "deckSize": "3"
 }
+###
+POST http://localhost:8080/quickstart_war_exploded/api/info/cityInfo
+Content-Type: application/json
+
+{
+"query": "Paris"
+}
+
