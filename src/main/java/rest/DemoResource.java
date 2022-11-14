@@ -4,15 +4,16 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import dtos.ComboDTO;
-import dtos.PokemonDTO;
-import dtos.RandomFactDTO;
-import dtos.WeatherDTO;
+import dtos.*;
+import entities.Bookmark;
+import entities.City;
 import entities.User;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -144,7 +145,7 @@ public class DemoResource {
         List<Future<PokemonDTO>> futuresPKMN = new ArrayList<>();
         List<Future<RandomFactDTO>> futuresRNDF = new ArrayList<>();
         Future<PokemonDTO> futurePKMN;
-        for (int i = 0; i <= size-1; i++) {
+        for (int i = 0; i <= size - 1; i++) {
             String finalI = String.valueOf((int) (Math.random() * 904 + 1));
             futurePKMN = executor.submit(() -> PokemonFetcher.getData(finalI));
             futuresPKMN.add(futurePKMN);
@@ -152,7 +153,7 @@ public class DemoResource {
             futuresRNDF.add(futureRNDF);
         }
 
-        for (int i = 0; i <= size-1; i++) {
+        for (int i = 0; i <= size - 1; i++) {
             pokemonDTO = futuresPKMN.get(i).get();
             randomFactDTO = futuresRNDF.get(i).get();
             comboDTOs.add(new ComboDTO(pokemonDTO, randomFactDTO));
@@ -163,23 +164,72 @@ public class DemoResource {
     @POST
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
+    @Path("getbookmarked")
+    public String getBookmarked(String query) throws IOException, ExecutionException, InterruptedException {
+        String userName;
+        WeatherDTO weatherDTO;
+        Set<Bookmark> bookmarks = new LinkedHashSet<>();
+        List<WeatherDTO> weatherDTOS = new ArrayList<>();
+
+        JsonObject json = JsonParser.parseString(query).getAsJsonObject();
+        userName = json.get("username").getAsString();
+        User user = FACADE.getUserByUserName(userName);
+        user.getBookmarks();
+
+        ExecutorService executor = Executors.newCachedThreadPool();
+        Future<WeatherDTO> futureWDTO;
+        List<Future<WeatherDTO>> futures = new ArrayList<>();
+
+        for (Bookmark bookmark : bookmarks) {
+            String cityName = bookmark.getCity().getCityName();
+            long cityId = bookmark.getCity().getId();
+            futureWDTO = executor.submit(() -> CityWeatherFetcher.getData(cityName, cityId));
+            futures.add(futureWDTO);
+        }
+
+        for (Future<WeatherDTO> fut : futures) {
+            weatherDTO = fut.get();
+            weatherDTOS.add(weatherDTO);
+        }
+        return GSON.toJson(weatherDTOS);
+    }
+
+    @POST
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
     @Path("cityinfo")
 //    @RolesAllowed({"user", "admin"})
     public String getCityInfo(String cityName) throws IOException, ExecutionException, InterruptedException {
         String query;
+        long cityId;
         WeatherDTO weatherDTO;
-//        RandomFactDTO randomFactDTO;
         JsonObject json = JsonParser.parseString(cityName).getAsJsonObject();
         query = json.get("query").getAsString();
-        ExecutorService executor = Executors.newCachedThreadPool();
-        Future<WeatherDTO> futureW = executor.submit(() -> CityWeatherFetcher.getData(query));
 
-//        Future<RandomFactDTO> futureRNDF = executor.submit(FactFetcher::getFact);
+//        check if city exits, if it does retrieve id, otherwise persist and retrieve id.
+        City city = FACADE.createCity(query);
+        cityId = city.getId();
+        ExecutorService executor = Executors.newCachedThreadPool();
+        Future<WeatherDTO> futureW = executor.submit(() -> CityWeatherFetcher.getData(query, cityId));
         weatherDTO = futureW.get();
         System.out.println("fra endpoint: " + weatherDTO.toString());
-//        randomFactDTO = futureRNDF.get();
+
         return GSON.toJson(weatherDTO);
-//        return GSON.toJson(new ComboDTO(pokemonDTO, randomFactDTO));
+
+    }
+
+    @POST
+    @Path("addbookmark")
+    @Consumes("application/json")
+    @Produces("application/json")
+    public String addBookmark(String query) {
+        JsonObject json = JsonParser.parseString(query).getAsJsonObject();
+        String username = json.get("username").getAsString();
+        String cityId = json.get("cityid").getAsString();
+        Bookmark bookmark = FACADE.createBookmark(username, Long.parseLong(cityId));
+        return GSON.toJson(new BookmarkDTO(bookmark));
+
+
     }
 
     @POST

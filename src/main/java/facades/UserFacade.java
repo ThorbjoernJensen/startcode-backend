@@ -1,10 +1,13 @@
 package facades;
 
+import entities.Bookmark;
+import entities.City;
 import entities.Role;
 import entities.User;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import javax.persistence.TypedQuery;
 
 import security.errorhandling.AuthenticationException;
 
@@ -84,5 +87,53 @@ public class UserFacade {
         em.persist(user);
         em.getTransaction().commit();
         return createdUser;
+    }
+
+    public Bookmark createBookmark(String userName, long cityId) {
+        Bookmark createdBookmark;
+        EntityManager em = emf.createEntityManager();
+        em.getTransaction().begin();
+
+        City city = em.find(City.class, cityId);
+
+        TypedQuery<User> query = em.createQuery("SELECT u FROM User u WHERE u.userName = :userName", User.class);
+        User user = query.setParameter("userName", userName).getSingleResult();
+
+        Bookmark bookmark = new Bookmark(user, city);
+
+        em.persist(bookmark);
+        em.getTransaction().commit();
+        return bookmark;
+    }
+
+    public City createCity(String cityName) {
+        EntityManager em = emf.createEntityManager();
+        City newCity = null;
+        em.getTransaction().begin();
+
+        TypedQuery<City> query = em.createQuery("SELECT c FROM City c WHERE c.cityName = :cityName", City.class)
+                .setParameter("cityName", cityName);
+        if (query.getResultList().size() == 0) {
+            newCity = new City(cityName);
+            em.persist(newCity);
+        } else {
+            newCity = query.getSingleResult();
+        }
+        em.getTransaction().commit();
+        return newCity;
+
+    }
+
+
+    public User getUserByUserName(String userName) {
+        EntityManager em = emf.createEntityManager();
+        User user;
+        em.getTransaction().begin();
+        TypedQuery<User> query = em.createQuery("SELECT u FROM User u WHERE u.userName = :userName", User.class)
+                .setParameter("userName", userName);
+        user = query.getSingleResult();
+        em.getTransaction().commit();
+        return user;
+
     }
 }

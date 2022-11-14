@@ -2,8 +2,8 @@ package utils;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import dtos.PokemonDTO;
 import dtos.WeatherDTO;
+import entities.City;
 
 import javax.ws.rs.WebApplicationException;
 import java.io.FileNotFoundException;
@@ -11,7 +11,7 @@ import java.io.IOException;
 
 public class CityWeatherFetcher {
 
-    public static WeatherDTO getData(String query) throws IOException {
+    public static WeatherDTO getData(String query, long cityId) throws IOException {
         System.out.println(query);
         try {
             String fetchUrl = String.format("https://weatherdbi.herokuapp.com/data/weather/%s/", query);
@@ -23,7 +23,7 @@ public class CityWeatherFetcher {
             String temp = json.get("currentConditions").getAsJsonObject().get("temp").getAsJsonObject().get("c").getAsString();
             String wind = json.get("currentConditions").getAsJsonObject().get("wind").getAsJsonObject().get("km").getAsString();
 
-            WeatherDTO fetchedDTO = new WeatherDTO(temp, wind, iconURL);
+            WeatherDTO fetchedDTO = new WeatherDTO(temp, wind, iconURL, cityId);
             return fetchedDTO;
 
         } catch (FileNotFoundException e) {

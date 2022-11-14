@@ -1,14 +1,17 @@
 package dtos;
 
 public class WeatherDTO {
-    private final String temp;
-    private final String wind;
-    private final String iconURL;
+    private String temp;
+    private String wind;
+    private String iconURL;
 
-    public WeatherDTO(String temp, String wind, String iconURL) {
+    private long cityId;
+
+    public WeatherDTO(String temp, String wind, String iconURL, long cityId) {
         this.temp = temp;
         this.wind = wind;
         this.iconURL = iconURL;
+        this.cityId = cityId;
     }
 
     public String getTemp() {
