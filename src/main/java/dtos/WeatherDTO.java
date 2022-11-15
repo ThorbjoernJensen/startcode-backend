@@ -6,12 +6,14 @@ public class WeatherDTO {
     private String iconURL;
 
     private long cityId;
+    private String cityName;
 
-    public WeatherDTO(String temp, String wind, String iconURL, long cityId) {
+    public WeatherDTO(String temp, String wind, String iconURL, long cityId, String cityName) {
         this.temp = temp;
         this.wind = wind;
         this.iconURL = iconURL;
         this.cityId = cityId;
+        this.cityName = cityName;
     }
 
     public String getTemp() {
