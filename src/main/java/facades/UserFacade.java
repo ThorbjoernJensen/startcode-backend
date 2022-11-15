@@ -69,6 +69,8 @@ public class UserFacade {
         em.persist(admin);
         em.persist(both);
         em.getTransaction().commit();
+        em.close();
+
 //        System.out.println("PW: " + user.getUserPass());
 //        System.out.println("Testing user with OK password: " + user.verifyPassword("As123456"));
 //        System.out.println("Testing user with wrong password: " + user.verifyPassword("test1"));
@@ -86,6 +88,7 @@ public class UserFacade {
         user.addRole(userRole);
         em.persist(user);
         em.getTransaction().commit();
+        em.close();
         return createdUser;
     }
 
@@ -103,6 +106,8 @@ public class UserFacade {
 
         em.persist(bookmark);
         em.getTransaction().commit();
+        em.close();
+
         return bookmark;
     }
 
@@ -120,6 +125,8 @@ public class UserFacade {
             newCity = query.getSingleResult();
         }
         em.getTransaction().commit();
+        em.close();
+
         return newCity;
 
     }
@@ -133,6 +140,8 @@ public class UserFacade {
                 .setParameter("userName", userName);
         user = query.getSingleResult();
         em.getTransaction().commit();
+        em.close();
+
         return user;
 
     }
