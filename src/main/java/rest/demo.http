@@ -32,7 +32,20 @@ Content-Type: application/json
 "query": "London"
 }
 
-###
+
+### testing welcome message
+GET https://dengamlegymnastiksal.dk/tomcat/quickstart/api/info/
+Content-Type: application/json
+
+### testing cityinfo
+POST https://dengamlegymnastiksal.dk/tomcat/quickstart/api/info/cityinfo
+Content-Type: application/json
+
+{
+  "query": "London"
+}
+
+### testing addbookmark
 POST http://localhost:8080/quickstart_war_exploded/api/info/addbookmark
 Content-Type: application/json
 
@@ -41,26 +54,10 @@ Content-Type: application/json
   "cityid": "2"
 }
 
-###
+### testing getbookmarked
 POST http://localhost:8080/quickstart_war_exploded/api/info/getbookmarked
 Content-Type: application/json
 
 {
   "username": "user"
-  }
-
-
-### testing welcome message
-GET https://dengamlegymnastiksal.dk/tomcat/quickstart/api/info/
-Content-Type: application/json
-
-###
-POST https://dengamlegymnastiksal.dk/tomcat/quickstart/api/info/cityinfo
-Content-Type: application/json
-
-{
-  "query": "London"
 }
-
-
-

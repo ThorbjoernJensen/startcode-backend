@@ -165,7 +165,7 @@ public class DemoResource {
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
     @Path("getbookmarked")
-    public String getBookmarked(String query) throws IOException, ExecutionException, InterruptedException {
+    public String getBookmarkedCities(String query) throws IOException, ExecutionException, InterruptedException {
         String userName;
         WeatherDTO weatherDTO;
         Set<Bookmark> bookmarks = new LinkedHashSet<>();
@@ -174,7 +174,7 @@ public class DemoResource {
         JsonObject json = JsonParser.parseString(query).getAsJsonObject();
         userName = json.get("username").getAsString();
         User user = FACADE.getUserByUserName(userName);
-        user.getBookmarks();
+        bookmarks = user.getBookmarks();
 
         ExecutorService executor = Executors.newCachedThreadPool();
         Future<WeatherDTO> futureWDTO;
