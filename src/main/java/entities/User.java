@@ -33,8 +33,8 @@ public class User implements Serializable {
     @ManyToMany
     private List<Role> roleList = new ArrayList<>();
 
-    @OneToMany (mappedBy = "user")
-    private Set<Bookmark> bookmarks = new LinkedHashSet<>();
+//    @OneToMany (mappedBy = "user")
+//    private Set<Bookmark> bookmarks = new LinkedHashSet<>();
 
 
     public List<String> getRolesAsStrings() {
@@ -63,7 +63,6 @@ public class User implements Serializable {
     //TODO add extra userpass and check if alike
     public User(String userName, String userPass) {
         this.userName = userName;
-
         this.userPass = BCrypt.hashpw(userPass, BCrypt.gensalt());
     }
 
@@ -96,14 +95,14 @@ public class User implements Serializable {
         roleList.add(userRole);
     }
 
-    public void addBookmark(Bookmark bookmark){
-        this.bookmarks.add(bookmark);
-        bookmark.setUser(this);
-    }
+//    public void addBookmark(Bookmark bookmark){
+//        this.bookmarks.add(bookmark);
+//        bookmark.setUser(this);
+//    }
 
-    public Set<Bookmark> getBookmarks() {
-        return bookmarks;
-    }
+//    public Set<Bookmark> getBookmarks() {
+//        return bookmarks;
+//    }
 
     //    public void addPhone(Phone phone){
 //        this.phone.add(phone);

@@ -5,8 +5,6 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import dtos.*;
-import entities.Bookmark;
-import entities.City;
 import entities.User;
 
 import java.io.IOException;
@@ -161,76 +159,76 @@ public class DemoResource {
         return GSON.toJson(comboDTOs);
     }
 
-    @POST
-    @Produces(MediaType.APPLICATION_JSON)
-    @Consumes(MediaType.APPLICATION_JSON)
-    @Path("getbookmarked")
-    public String getBookmarkedCities(String query) throws IOException, ExecutionException, InterruptedException {
-        String userName;
-        WeatherDTO weatherDTO;
-        Set<Bookmark> bookmarks = new LinkedHashSet<>();
-        List<WeatherDTO> weatherDTOS = new ArrayList<>();
+//    @POST
+//    @Produces(MediaType.APPLICATION_JSON)
+//    @Consumes(MediaType.APPLICATION_JSON)
+//    @Path("getbookmarked")
+//    public String getBookmarkedCities(String query) throws IOException, ExecutionException, InterruptedException {
+//        String userName;
+//        WeatherDTO weatherDTO;
+//        Set<Bookmark> bookmarks = new LinkedHashSet<>();
+//        List<WeatherDTO> weatherDTOS = new ArrayList<>();
+//
+//        JsonObject json = JsonParser.parseString(query).getAsJsonObject();
+//        userName = json.get("username").getAsString();
+//        User user = FACADE.getUserByUserName(userName);
+//        bookmarks = user.getBookmarks();
+//
+//        ExecutorService executor = Executors.newCachedThreadPool();
+//        Future<WeatherDTO> futureWDTO;
+//        List<Future<WeatherDTO>> futures = new ArrayList<>();
+//
+//        for (Bookmark bookmark : bookmarks) {
+//            String cityName = bookmark.getCity().getCityName();
+//            long cityId = bookmark.getCity().getId();
+//            futureWDTO = executor.submit(() -> CityWeatherFetcher.getData(cityName, cityId));
+//            futures.add(futureWDTO);
+//        }
+//
+//        for (Future<WeatherDTO> fut : futures) {
+//            weatherDTO = fut.get();
+//            weatherDTOS.add(weatherDTO);
+//        }
+//        return GSON.toJson(weatherDTOS);
+//    }
 
-        JsonObject json = JsonParser.parseString(query).getAsJsonObject();
-        userName = json.get("username").getAsString();
-        User user = FACADE.getUserByUserName(userName);
-        bookmarks = user.getBookmarks();
+//    @POST
+//    @Produces(MediaType.APPLICATION_JSON)
+//    @Consumes(MediaType.APPLICATION_JSON)
+//    @Path("cityinfo")
+////    @RolesAllowed({"user", "admin"})
+//    public String getCityInfo(String cityName) throws IOException, ExecutionException, InterruptedException {
+//        String query;
+//        long cityId;
+//        WeatherDTO weatherDTO;
+//        JsonObject json = JsonParser.parseString(cityName).getAsJsonObject();
+//        query = json.get("query").getAsString();
+//
+////        check if city exits, if it does retrieve id, otherwise persist and retrieve id.
+//        City city = FACADE.createCity(query);
+//        cityId = city.getId();
+//        ExecutorService executor = Executors.newCachedThreadPool();
+//        Future<WeatherDTO> futureW = executor.submit(() -> CityWeatherFetcher.getData(query, cityId));
+//        weatherDTO = futureW.get();
+//        System.out.println("fra endpoint: " + weatherDTO.toString());
+//
+//        return GSON.toJson(weatherDTO);
+//
+//    }
 
-        ExecutorService executor = Executors.newCachedThreadPool();
-        Future<WeatherDTO> futureWDTO;
-        List<Future<WeatherDTO>> futures = new ArrayList<>();
-
-        for (Bookmark bookmark : bookmarks) {
-            String cityName = bookmark.getCity().getCityName();
-            long cityId = bookmark.getCity().getId();
-            futureWDTO = executor.submit(() -> CityWeatherFetcher.getData(cityName, cityId));
-            futures.add(futureWDTO);
-        }
-
-        for (Future<WeatherDTO> fut : futures) {
-            weatherDTO = fut.get();
-            weatherDTOS.add(weatherDTO);
-        }
-        return GSON.toJson(weatherDTOS);
-    }
-
-    @POST
-    @Produces(MediaType.APPLICATION_JSON)
-    @Consumes(MediaType.APPLICATION_JSON)
-    @Path("cityinfo")
-//    @RolesAllowed({"user", "admin"})
-    public String getCityInfo(String cityName) throws IOException, ExecutionException, InterruptedException {
-        String query;
-        long cityId;
-        WeatherDTO weatherDTO;
-        JsonObject json = JsonParser.parseString(cityName).getAsJsonObject();
-        query = json.get("query").getAsString();
-
-//        check if city exits, if it does retrieve id, otherwise persist and retrieve id.
-        City city = FACADE.createCity(query);
-        cityId = city.getId();
-        ExecutorService executor = Executors.newCachedThreadPool();
-        Future<WeatherDTO> futureW = executor.submit(() -> CityWeatherFetcher.getData(query, cityId));
-        weatherDTO = futureW.get();
-        System.out.println("fra endpoint: " + weatherDTO.toString());
-
-        return GSON.toJson(weatherDTO);
-
-    }
-
-    @POST
-    @Path("addbookmark")
-    @Consumes("application/json")
-    @Produces("application/json")
-    public String addBookmark(String query) {
-        JsonObject json = JsonParser.parseString(query).getAsJsonObject();
-        String username = json.get("username").getAsString();
-        String cityId = json.get("cityid").getAsString();
-        Bookmark bookmark = FACADE.createBookmark(username, Long.parseLong(cityId));
-        return GSON.toJson(new BookmarkDTO(bookmark));
-
-
-    }
+//    @POST
+//    @Path("addbookmark")
+//    @Consumes("application/json")
+//    @Produces("application/json")
+//    public String addBookmark(String query) {
+//        JsonObject json = JsonParser.parseString(query).getAsJsonObject();
+//        String username = json.get("username").getAsString();
+//        String cityId = json.get("cityid").getAsString();
+//        Bookmark bookmark = FACADE.createBookmark(username, Long.parseLong(cityId));
+//        return GSON.toJson(new BookmarkDTO(bookmark));
+//
+//
+//    }
 
     @POST
     @Path("signup")

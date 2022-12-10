@@ -3,7 +3,6 @@ package utils;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import dtos.WeatherDTO;
-import entities.City;
 
 import javax.ws.rs.WebApplicationException;
 import java.io.FileNotFoundException;

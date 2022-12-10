@@ -1,7 +1,5 @@
 package facades;
 
-import entities.Bookmark;
-import entities.City;
 import entities.Role;
 import entities.User;
 
@@ -92,44 +90,44 @@ public class UserFacade {
         return createdUser;
     }
 
-    public Bookmark createBookmark(String userName, long cityId) {
-        Bookmark createdBookmark;
-        EntityManager em = emf.createEntityManager();
-        em.getTransaction().begin();
-
-        City city = em.find(City.class, cityId);
-
-        TypedQuery<User> query = em.createQuery("SELECT u FROM User u WHERE u.userName = :userName", User.class);
-        User user = query.setParameter("userName", userName).getSingleResult();
-
-        Bookmark bookmark = new Bookmark(user, city);
-
-        em.persist(bookmark);
-        em.getTransaction().commit();
-        em.close();
-
-        return bookmark;
-    }
-
-    public City createCity(String cityName) {
-        EntityManager em = emf.createEntityManager();
-        City newCity = null;
-        em.getTransaction().begin();
-
-        TypedQuery<City> query = em.createQuery("SELECT c FROM City c WHERE c.cityName = :cityName", City.class)
-                .setParameter("cityName", cityName);
-        if (query.getResultList().size() == 0) {
-            newCity = new City(cityName);
-            em.persist(newCity);
-        } else {
-            newCity = query.getSingleResult();
-        }
-        em.getTransaction().commit();
-        em.close();
-
-        return newCity;
-
-    }
+//    public Bookmark createBookmark(String userName, long cityId) {
+//        Bookmark createdBookmark;
+//        EntityManager em = emf.createEntityManager();
+//        em.getTransaction().begin();
+//
+//        City city = em.find(City.class, cityId);
+//
+//        TypedQuery<User> query = em.createQuery("SELECT u FROM User u WHERE u.userName = :userName", User.class);
+//        User user = query.setParameter("userName", userName).getSingleResult();
+//
+//        Bookmark bookmark = new Bookmark(user, city);
+//
+//        em.persist(bookmark);
+//        em.getTransaction().commit();
+//        em.close();
+//
+//        return bookmark;
+//    }
+//
+//    public City createCity(String cityName) {
+//        EntityManager em = emf.createEntityManager();
+//        City newCity = null;
+//        em.getTransaction().begin();
+//
+//        TypedQuery<City> query = em.createQuery("SELECT c FROM City c WHERE c.cityName = :cityName", City.class)
+//                .setParameter("cityName", cityName);
+//        if (query.getResultList().size() == 0) {
+//            newCity = new City(cityName);
+//            em.persist(newCity);
+//        } else {
+//            newCity = query.getSingleResult();
+//        }
+//        em.getTransaction().commit();
+//        em.close();
+//
+//        return newCity;
+//
+//    }
 
 
     public User getUserByUserName(String userName) {
