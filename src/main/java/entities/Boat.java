@@ -8,7 +8,7 @@ import java.util.Set;
 public class Boat {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", nullable = true)
+    @Column(name = "boat_id", nullable = true)
     private Long id;
 
     private String brand;
@@ -21,6 +21,10 @@ public class Boat {
 
     @ManyToMany(mappedBy = "boats")
     private Set<Owner> owners;
+
+    @ManyToOne
+    @JoinColumn(name = "harbour_id")
+    private Harbour harbour;
 
     public Boat() {
     }
@@ -71,5 +75,14 @@ public class Boat {
 
     public void setOwners(Set<Owner> owners) {
         this.owners = owners;
+    }
+
+    public Harbour getHarbour() {
+        return harbour;
+    }
+
+    public void setHarbour(Harbour harbour) {
+        this.harbour = harbour;
+        harbour.addBoat(this);
     }
 }

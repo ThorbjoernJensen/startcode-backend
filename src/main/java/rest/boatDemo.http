@@ -1,0 +1,12 @@
+###
+GET http://localhost:8080/boats/api/boat
+
+###
+GET http://localhost:8080/boats/api/boat/owner
+
+### get owners from deployed
+GET https://dengamlegymnastiksal.dk/tomcat/boats/api/owner
+GET https://dengamlegymnastiksal.dk/boats/api/
+
+###
+GET http://localhost:8080/boats/api/boat/populate

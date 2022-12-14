@@ -1,5 +1,6 @@
 package facades;
 
+import dtos.OwnerDTO;
 import dtos.RenameMeDTO;
 import entities.Boat;
 import entities.Owner;
@@ -63,12 +64,13 @@ public class APIFacade {
         }
     }
 
-    public List<Owner> getAll(){
+    public List<OwnerDTO> getAllOwners(){
         EntityManager em = emf.createEntityManager();
         TypedQuery<Owner> query = em.createQuery("SELECT o FROM Owner o", Owner.class);
         List<Owner> owners = query.getResultList();
+        List<OwnerDTO> ownerDTOList = OwnerDTO.makeDTOList(owners);
 //        return RenameMeDTO.getDtos(rms);
-        return owners;
+        return ownerDTOList;
     }
 
     public static void main(String[] args) {
