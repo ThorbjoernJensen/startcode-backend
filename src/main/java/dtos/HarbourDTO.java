@@ -19,6 +19,9 @@ public class HarbourDTO {
     private List<BoatDTO> boats;
 
     public HarbourDTO(Harbour harbour) {
+        if (harbour.getId() != null){
+            this.id = harbour.getId();
+        }
         this.name = harbour.getName();
         this.address = harbour.getAddress();
         this.capacity = harbour.getCapacity();

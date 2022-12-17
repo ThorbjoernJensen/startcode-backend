@@ -13,6 +13,9 @@ public class OwnerDTO {
 
 
     public OwnerDTO(Owner owner) {
+        if (owner.getId() != null){
+            this.id = owner.getId();
+        }
         this.name = owner.getName();
         this.address = owner.getAddress();
         this.phone = owner.getPhone();

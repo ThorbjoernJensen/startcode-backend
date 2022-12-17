@@ -14,7 +14,10 @@ public class BoatDTO {
     private String image;
 
     public BoatDTO(Boat boat) {
-//        this.id = id;
+
+        if (boat.getId() != null){
+            this.id = boat.getId();
+        }
         this.brand = boat.getBrand();
         this.model = boat.getModel();
         this.name = boat.getName();
