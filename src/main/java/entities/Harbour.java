@@ -17,7 +17,7 @@ public class Harbour {
     private String address;
 
     private Integer capacity;
-    @OneToMany
+    @OneToMany (mappedBy = "harbour")
     private Set<Boat> boats = new LinkedHashSet<>();
 
     public Harbour() {

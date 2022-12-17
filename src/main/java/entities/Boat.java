@@ -18,7 +18,6 @@ public class Boat {
     @ManyToMany(mappedBy = "boats")
     private Set<Owner> owners = new LinkedHashSet<>();
     @ManyToOne
-    @JoinColumn(name = "harbour_id")
     private Harbour harbour;
 
     public Boat() {
