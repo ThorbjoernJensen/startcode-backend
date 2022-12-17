@@ -45,6 +45,13 @@ public class APIFacadeTest {
         try {
             em.getTransaction().begin();
 
+            em.createQuery("delete from Boat").executeUpdate();
+            em.createQuery("delete from Harbour").executeUpdate();
+            em.createQuery("delete from Owner").executeUpdate();
+            em.createQuery("delete from User").executeUpdate();
+            em.createQuery("delete from Role").executeUpdate();
+
+
             Owner o1 = new Owner("Skipper Bænt", "Persillehaven 40", "38383838");
             Owner o2 = new Owner("Skipper Niels", "Persillehaven 42", "39393939");
             Owner o3 = new Owner("Skipper Bente", "Persillehaven 38", "40404040");

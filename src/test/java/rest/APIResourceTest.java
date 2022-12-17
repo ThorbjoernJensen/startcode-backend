@@ -68,6 +68,10 @@ public class APIResourceTest {
         EntityManager em = emf.createEntityManager();
         try {
             em.getTransaction().begin();
+
+            em.createQuery("delete from Boat").executeUpdate();
+            em.createQuery("delete from Harbour").executeUpdate();
+            em.createQuery("delete from Owner").executeUpdate();
             em.createQuery("delete from User").executeUpdate();
             em.createQuery("delete from Role").executeUpdate();
 
