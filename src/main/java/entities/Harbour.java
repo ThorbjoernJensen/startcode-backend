@@ -1,6 +1,7 @@
 package entities;
 
 import javax.persistence.*;
+import java.util.LinkedHashSet;
 import java.util.Set;
 
 @Entity
@@ -16,9 +17,17 @@ public class Harbour {
     private String address;
 
     private Integer capacity;
-
     @OneToMany
-    private Set<Boat> boats;
+    private Set<Boat> boats = new LinkedHashSet<>();
+
+    public Harbour() {
+    }
+
+    public Harbour(String name, String address, Integer capacity) {
+        this.name = name;
+        this.address = address;
+        this.capacity = capacity;
+    }
 
     public Long getId() {
         return id;

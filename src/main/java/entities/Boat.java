@@ -1,6 +1,7 @@
 package entities;
 
 import javax.persistence.*;
+import java.util.LinkedHashSet;
 import java.util.Set;
 
 @Entity
@@ -10,23 +11,24 @@ public class Boat {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "boat_id", nullable = true)
     private Long id;
-
     private String brand;
-
-    private String make;
-
+    private String model;
     private String name;
-
     private String image;
-
     @ManyToMany(mappedBy = "boats")
-    private Set<Owner> owners;
-
+    private Set<Owner> owners = new LinkedHashSet<>();
     @ManyToOne
     @JoinColumn(name = "harbour_id")
     private Harbour harbour;
 
     public Boat() {
+    }
+
+    public Boat(String brand, String model, String name, String image) {
+        this.brand = brand;
+        this.model = model;
+        this.name = name;
+        this.image = image;
     }
 
     public Long getId() {
@@ -45,12 +47,12 @@ public class Boat {
         this.brand = brand;
     }
 
-    public String getMake() {
-        return make;
+    public String getModel() {
+        return model;
     }
 
-    public void setMake(String make) {
-        this.make = make;
+    public void setModel(String make) {
+        this.model = make;
     }
 
     public String getName() {
@@ -77,12 +79,18 @@ public class Boat {
         this.owners = owners;
     }
 
+    public void addOwner(Owner owner) {
+        this.owners.add(owner);
+        owner.addBoat(this);
+
+    }
+
     public Harbour getHarbour() {
         return harbour;
     }
 
     public void setHarbour(Harbour harbour) {
         this.harbour = harbour;
-        harbour.addBoat(this);
+//        harbour.addBoat(this);
     }
 }

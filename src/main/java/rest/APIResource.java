@@ -2,6 +2,7 @@ package rest;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import dtos.HarbourDTO;
 import dtos.OwnerDTO;
 import entities.Owner;
 import facades.APIFacade;
@@ -49,6 +50,14 @@ public class APIResource {
         List<OwnerDTO> ownerDTOList = FACADE.getAllOwners();
         return GSON.toJson(ownerDTOList);
 
+    }
+
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("harbour")
+    public String getAllHarbours(){
+        List<HarbourDTO> harbourDTOList = FACADE.getAllHarbours();
+        return GSON.toJson(harbourDTOList);
     }
 
 

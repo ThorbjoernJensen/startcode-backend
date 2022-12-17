@@ -1,6 +1,7 @@
 package entities;
 
 import javax.persistence.*;
+import java.util.LinkedHashSet;
 import java.util.Set;
 
 @Entity
@@ -10,21 +11,19 @@ public class Owner {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private Long id;
-
     private String name;
-
     private String address;
-
     private String phone;
-
     @ManyToMany
-    private Set<Boat> boats;
+    private Set<Boat> boats = new LinkedHashSet<>();
 
     public Owner() {
     }
 
-    public Owner(String name) {
+    public Owner(String name, String address, String phone) {
         this.name = name;
+        this.address = address;
+        this.phone = phone;
     }
 
     public Long getId() {
