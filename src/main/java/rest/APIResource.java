@@ -2,9 +2,12 @@ package rest;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import dtos.HarbourDTO;
 import dtos.OwnerDTO;
 import entities.Owner;
+import entities.User;
 import facades.APIFacade;
 import facades.Populator;
 import facades.UserFacade;
@@ -12,15 +15,12 @@ import utils.EMF_Creator;
 
 import javax.annotation.security.DeclareRoles;
 import javax.persistence.EntityManagerFactory;
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
+import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.SecurityContext;
 import javax.ws.rs.core.UriInfo;
 import java.util.List;
-
 
 @Path("boat")
 @DeclareRoles({"user", "admin"})
@@ -34,8 +34,7 @@ public class APIResource {
 
     private static final APIFacade FACADE = APIFacade.getFacadeInstance(EMF);
     private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
-
-    private static Populator POPULATOR;
+    private static Populator populator;
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
@@ -55,7 +54,7 @@ public class APIResource {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("harbour")
-    public String getAllHarbours(){
+    public String getAllHarbours() {
         List<HarbourDTO> harbourDTOList = FACADE.getAllHarbours();
         return GSON.toJson(harbourDTOList);
     }
@@ -66,17 +65,11 @@ public class APIResource {
     @Path("populate")
 //    @RolesAllowed({"admin"})
     public String populateDB() {
-        POPULATOR.populate();
+        populator.populate();
         return "{\"msg\":\"DB populated\"}";
 
-
-//        try {
-//            TypedQuery<User> query = em.createQuery ("select u from User u",entities.User.class);
-//            List<User> users = query.getResultList();
-//            return "[" + users.size() + "]";
-//        } finally {
-//            em.close();
-//        }
     }
+
+
 }
 

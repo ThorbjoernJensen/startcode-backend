@@ -26,7 +26,6 @@ public class HarbourDTO {
         this.address = harbour.getAddress();
         this.capacity = harbour.getCapacity();
         this.boats = BoatDTO.makeDTOList(harbour.getBoats());
-
     }
 
     public static List<HarbourDTO> makeDTOList(List<Harbour> harbours) {

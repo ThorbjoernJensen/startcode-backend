@@ -4,6 +4,7 @@ import entities.Boat;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 
 public class BoatDTO {
@@ -34,5 +35,18 @@ public class BoatDTO {
         List<BoatDTO> boatDTOList = new ArrayList<>();
         boatList.forEach(boat -> boatDTOList.add(new BoatDTO(boat)));
         return boatDTOList;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        BoatDTO boatDTO = (BoatDTO) o;
+        return Objects.equals(id, boatDTO.id) && Objects.equals(brand, boatDTO.brand) && Objects.equals(model, boatDTO.model) && Objects.equals(name, boatDTO.name) && Objects.equals(image, boatDTO.image);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, brand, model, name, image);
     }
 }

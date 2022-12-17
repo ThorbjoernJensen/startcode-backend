@@ -5,7 +5,6 @@
  */
 package facades;
 
-import dtos.RenameMeDTO;
 import entities.*;
 
 import javax.persistence.EntityManager;

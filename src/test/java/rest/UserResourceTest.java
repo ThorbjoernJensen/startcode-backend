@@ -14,17 +14,20 @@ import javax.ws.rs.core.UriBuilder;
 import org.glassfish.grizzly.http.server.HttpServer;
 import org.glassfish.jersey.grizzly2.httpserver.GrizzlyHttpServerFactory;
 import org.glassfish.jersey.server.ResourceConfig;
+
+import static org.hamcrest.CoreMatchers.hasItems;
 import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.hasEntry;
+
+import org.hamcrest.core.IsEqual;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import utils.EMF_Creator;
 
 //@Disabled
-public class LoginEndpointTest {
-
+public class UserResourceTest {
     private static final int SERVER_PORT = 7777;
     private static final String SERVER_URL = "http://localhost/api";
 
@@ -39,7 +42,6 @@ public class LoginEndpointTest {
 
     @BeforeAll
     public static void setUpClass() {
-        //This method must be called before you request the EntityManagerFactory
         EMF_Creator.startREST_TestWithDB();
         emf = EMF_Creator.createEntityManagerFactoryForTest();
 
@@ -52,14 +54,11 @@ public class LoginEndpointTest {
 
     @AfterAll
     public static void closeTestServer() {
-        //Don't forget this, if you called its counterpart in @BeforeAll
         EMF_Creator.endREST_TestWithDB();
-        
         httpServer.shutdownNow();
     }
 
-    // Setup the DataBase (used by the test-server and this test) in a known state BEFORE EACH TEST
-    //TODO -- Make sure to change the EntityClass used below to use YOUR OWN (renamed) Entity class
+
     @BeforeEach
     public void setUp() {
         EntityManager em = emf.createEntityManager();
@@ -112,7 +111,7 @@ public class LoginEndpointTest {
 
     @Test
     public void serverIsRunning() {
-        given().when().get("/info").then().statusCode(200);
+        given().when().get("/user").then().statusCode(200);
     }
 
     @Test
@@ -120,7 +119,7 @@ public class LoginEndpointTest {
         given()
                 .contentType("application/json")
                 .when()
-                .get("/info/").then()
+                .get("/user/").then()
                 .statusCode(200)
                 .body("msg", equalTo("Hello anonymous"));
     }
@@ -133,7 +132,7 @@ public class LoginEndpointTest {
                 .accept(ContentType.JSON)
                 .header("x-access-token", securityToken)
                 .when()
-                .get("/info/admin").then()
+                .get("/user/admin").then()
                 .statusCode(200)
                 .body("msg", equalTo("Hello to (admin) User: admin"));
     }
@@ -145,7 +144,7 @@ public class LoginEndpointTest {
                 .contentType("application/json")
                 .header("x-access-token", securityToken)
                 .when()
-                .get("/info/user").then()
+                .get("/user/user").then()
                 .statusCode(200)
                 .body("msg", equalTo("Hello to User: user"));
     }
@@ -157,7 +156,7 @@ public class LoginEndpointTest {
                 .contentType("application/json")
                 .header("x-access-token", securityToken)
                 .when()
-                .get("/info/admin").then() //Call Admin endpoint as user
+                .get("/user/admin").then() //Call Admin endpoint as user
                 .statusCode(401);
     }
 
@@ -168,7 +167,7 @@ public class LoginEndpointTest {
                 .contentType("application/json")
                 .header("x-access-token", securityToken)
                 .when()
-                .get("/info/user").then() //Call User endpoint as Admin
+                .get("/user/user").then() //Call User endpoint as Admin
                 .statusCode(401);
     }
 
@@ -180,7 +179,7 @@ public class LoginEndpointTest {
                 .accept(ContentType.JSON)
                 .header("x-access-token", securityToken)
                 .when()
-                .get("/info/admin").then()
+                .get("/user/admin").then()
                 .statusCode(200)
                 .body("msg", equalTo("Hello to (admin) User: user_admin"));
     }
@@ -192,7 +191,7 @@ public class LoginEndpointTest {
                 .contentType("application/json")
                 .header("x-access-token", securityToken)
                 .when()
-                .get("/info/user").then()
+                .get("/user/user").then()
                 .statusCode(200)
                 .body("msg", equalTo("Hello to User: user_admin"));
     }
@@ -203,7 +202,7 @@ public class LoginEndpointTest {
         given()
                 .contentType("application/json")
                 .when()
-                .get("/info/user").then()
+                .get("/user/user").then()
                 .statusCode(403)
                 .body("code", equalTo(403))
                 .body("message", equalTo("Not authenticated - do login"));
@@ -215,10 +214,25 @@ public class LoginEndpointTest {
         given()
                 .contentType("application/json")
                 .when()
-                .get("/info/user").then()
+                .get("/user/user").then()
                 .statusCode(403)
                 .body("code", equalTo(403))
                 .body("message", equalTo("Not authenticated - do login"));
+    }
+
+    @Test
+    void createUser() {
+        String json = "{userName: test, userPass: 1234}";
+        given()
+                .contentType("application/json")
+                .accept("application/json")
+                .body(json)
+                .when().post("/user/signup")
+                .then()
+                .assertThat()
+                .statusCode(200)
+                .body("userName", IsEqual.equalTo("test"))
+                .body("roleList", hasItems(hasEntry("roleName", "user")));
     }
 
 }

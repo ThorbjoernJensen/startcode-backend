@@ -2,11 +2,8 @@ package facades;
 
 import dtos.HarbourDTO;
 import dtos.OwnerDTO;
-import dtos.RenameMeDTO;
-import entities.Boat;
 import entities.Harbour;
 import entities.Owner;
-import entities.RenameMe;
 import utils.EMF_Creator;
 
 import javax.persistence.EntityManager;

@@ -1,7 +1,9 @@
 package rest;
 
-import entities.Role;
-import entities.User;
+import dtos.BoatDTO;
+import dtos.HarbourDTO;
+import dtos.OwnerDTO;
+import entities.*;
 import io.restassured.RestAssured;
 import io.restassured.parsing.Parser;
 import org.glassfish.grizzly.http.server.HttpServer;
@@ -19,19 +21,21 @@ import javax.ws.rs.core.UriBuilder;
 import java.net.URI;
 
 import static io.restassured.RestAssured.given;
-import static org.hamcrest.CoreMatchers.hasItems;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.hasEntry;
-import static org.hamcrest.core.IsEqual.equalTo;
 
-class DemoResourceTest {
-
+public class APIResourceTest {
     private static final int SERVER_PORT = 7777;
     private static final String SERVER_URL = "http://localhost/api";
 
     static final URI BASE_URI = UriBuilder.fromUri(SERVER_URL).port(SERVER_PORT).build();
     private static HttpServer httpServer;
     private static EntityManagerFactory emf;
+
+    private static Owner o1, o2, o3;
+    private static OwnerDTO o1DTO, o2DTO, o3DTO;
+    private static Harbour h1, h2, h3;
+    private static HarbourDTO h1DTO, h2DTO, h3DTO;
+    private static Boat b1, b2, b3;
+    private static BoatDTO b1DTO, b2DTO, b3DTO;
 
     static HttpServer startServer() {
         ResourceConfig rc = ResourceConfig.forApplication(new ApplicationConfig());
@@ -81,13 +85,56 @@ class DemoResourceTest {
             em.persist(user);
             em.persist(admin);
             em.persist(both);
+
+
+            Owner o1 = new Owner("Skipper Bænt", "Persillehaven 40", "38383838");
+            Owner o2 = new Owner("Skipper Niels", "Persillehaven 42", "39393939");
+            Owner o3 = new Owner("Skipper Bente", "Persillehaven 38", "40404040");
+
+            Harbour h1 = new Harbour("Melsted Havn", "Melsted byvej", 8);
+            Harbour h2 = new Harbour("Nexø Havn", "Hovedvejen", 14);
+            Harbour h3 = new Harbour("Aakirkeby Havn", "Melsted byvej", 32);
+
+            Boat b1 = new Boat("Boatmaster", "speeder", "Martha", "https://img.fruugo.com/product/8/58/278398588_max.jpg");
+            Boat b2 = new Boat("Das Boot", "submarine", "Aase", "https://cdn.shopify.com/s/files/1/0626/0562/3537/products/31S6ddXfLmL.jpg?v=1659358008");
+            Boat b3 = new Boat("Hanger", "supersize", "King Lincoln", "https://upload.wikimedia.org/wikipedia/commons/2/2d/USS_Nimitz_%28CVN-68%29.jpg");
+
+            b1.addOwner(o1);
+            b2.addOwner(o1);
+            b2.addOwner(o2);
+            b3.addOwner(o3);
+            b3.addOwner(o3);
+
+            h1.addBoat(b1);
+            h3.addBoat(b2);
+            h3.addBoat(b3);
+
+            em.persist(o1);
+            em.persist(o2);
+            em.persist(o3);
+            em.persist(b1);
+            em.persist(b2);
+            em.persist(b3);
+            em.persist(h1);
+            em.persist(h2);
+            em.persist(h3);
             em.getTransaction().commit();
+
+            o1DTO = new OwnerDTO(o1);
+            o2DTO = new OwnerDTO(o2);
+            o1DTO = new OwnerDTO(o3);
+            h1DTO = new HarbourDTO(h1);
+            h2DTO = new HarbourDTO(h2);
+            h3DTO = new HarbourDTO(h3);
+            b1DTO = new BoatDTO(b1);
+            b2DTO = new BoatDTO(b2);
+            b3DTO = new BoatDTO(b3);
+
         } finally {
             em.close();
         }
-    }
 
-    private static String securityToken;
+    }
 
     private static void login(String username, String password) {
         String json = String.format("{username: \"%s\", password: \"%s\"}", username, password);
@@ -103,39 +150,18 @@ class DemoResourceTest {
         securityToken = null;
     }
 
-//    @Test
-//    void getPokeInfoAsUser() {
-//        String json = "{query: \"133\"}";
-//        login("user", "test1");
-//        given()
-//                .contentType("application/json")
-//                .accept("application/json")
-//                .header("x-access-token", securityToken)
-//                .body(json)
-//                .when().post("/info/pokemon")
-//                .then()
-//                .assertThat()
-//                .statusCode(200)
-//                .body("pokemonId", equalTo("133"))
-//                .body("pokemonName", equalTo("eevee"));
-//    }
-//
-//    @Test
-//    void getPokeInfoAsAdmin() {
-//        String json = "{query: \"eevee\"}";
-//        login("admin", "test2");
-//        given()
-//                .contentType("application/json")
-//                .accept("application/json")
-//                .header("x-access-token", securityToken)
-//                .body(json)
-//                .when().post("/info/pokemon")
-//                .then()
-//                .assertThat()
-//                .statusCode(200)
-//                .body("pokemonId", equalTo("133"))
-//                .body("pokemonName", equalTo("eevee"));
-//    }
+    private static String securityToken;
+
+
+    @Test
+    public void testAPIResourceIsResponding() {
+        given().when().get("/boat").then().statusCode(200);
+    }
+    @Test
+    public void testUserResourceIsResponding() {
+        given().when().get("/user").then().statusCode(200);
+    }
+
 
 
 }
