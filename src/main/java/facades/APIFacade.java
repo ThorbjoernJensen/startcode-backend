@@ -1,7 +1,9 @@
 package facades;
 
+import dtos.BoatDTO;
 import dtos.HarbourDTO;
 import dtos.OwnerDTO;
+import entities.Boat;
 import entities.Harbour;
 import entities.Owner;
 import utils.EMF_Creator;
@@ -10,6 +12,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.TypedQuery;
 import java.util.List;
+import java.util.Set;
 
 public class APIFacade {
     private static APIFacade instance;
@@ -65,31 +68,32 @@ public class APIFacade {
         }
     }
 
-    public List<OwnerDTO> getAllOwners() {
+    public Set<OwnerDTO> getAllOwners() {
         EntityManager em = emf.createEntityManager();
         TypedQuery<Owner> query = em.createQuery("SELECT o FROM Owner o", Owner.class);
         List<Owner> owners = query.getResultList();
-        List<OwnerDTO> ownerDTOList = OwnerDTO.makeDTOList(owners);
+        Set<OwnerDTO> ownerDTOList = OwnerDTO.makeDTOSet(owners);
 //        return RenameMeDTO.getDtos(rms);
         return ownerDTOList;
     }
 
-    public List<HarbourDTO> getAllHarbours() {
+    public Set<HarbourDTO> getAllHarbours() {
         EntityManager em = getEntityManager();
         TypedQuery<Harbour> query = em.createQuery("SELECT h FROM Harbour h", Harbour.class);
         List<Harbour> harbours = query.getResultList();
-        List<HarbourDTO> harbourDTOList = HarbourDTO.makeDTOList(harbours);
+//        List<HarbourDTO> harbourDTOList = HarbourDTO.makeDTOSet(harbours);
+        Set<HarbourDTO> harbourDTOList = HarbourDTO.makeDTOSet(harbours);
         System.out.println("fra facade: " +harbourDTOList.toString());
         return harbourDTOList;
     }
 
-    public static void main(String[] args) {
-        emf = EMF_Creator.createEntityManagerFactory();
-        APIFacade facade = getFacadeInstance(emf);
-
-
+    public Set<BoatDTO> getAllBoats() {
+        EntityManager em = getEntityManager();
+        TypedQuery<Boat> query = em.createQuery("SELECT b FROM Boat b", Boat.class);
+        List<Boat> boatList = query.getResultList();
+        Set<BoatDTO> boatDTOSet = BoatDTO.makeDTOSet(boatList);
+        return boatDTOSet;
     }
-
 }
 
 

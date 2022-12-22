@@ -1,3 +1,13 @@
+### test login at localhost
+POST http://localhost:8080/boats/api/login
+Content-Type: application/json
+accept: application/json
+
+{
+"username": "user_admin",
+"password": "DQ123456"
+}
+
 ### test welcome message localhost
 GET http://localhost:8080/boats/api/boat
 
@@ -6,9 +16,16 @@ GET https://dengamlegymnastiksal.dk/tomcat/boats/api/boat
 
 ### get owners from localhost
 GET http://localhost:8080/boats/api/boat/owner
-
+x-access-token: eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyX2FkbWluIiwicm9sZXMiOiJhZG1pbix1c2VyIiwiZXhwIjoxNjcxNjU3MTQyLCJpYXQiOjE2NzE2NTUzNDIsImlzc3VlciI6InNlbWVzdGVyc3RhcnRjb2RlLWRhdDMiLCJ1c2VybmFtZSI6InVzZXJfYWRtaW4ifQ.sdhtBtl29PrE9oHfDf7VRYKDYWJHgDWR5lXqt-nKYdY
 ### get owners from deployed
 GET https://dengamlegymnastiksal.dk/tomcat/boats/api/owner
 
 ###
 GET http://localhost:8080/boats/api/boat/populate
+
+### get harbours from localhost
+GET http://localhost:8080/boats/api/boat/harbour
+#x-access-token: eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyX2FkbWluIiwicm9sZXMiOiJhZG1pbix1c2VyIiwiZXhwIjoxNjcxNzM3NjcxLCJpYXQiOjE2NzE3MzU4NzEsImlzc3VlciI6InNlbWVzdGVyc3RhcnRjb2RlLWRhdDMiLCJ1c2VybmFtZSI6InVzZXJfYWRtaW4ifQ.cQQaQVlu3nUsZ7KzGx9ALanlLy3LWw2l9vo_r6TpNfU
+### get boats from localhost
+GET http://localhost:8080/boats/api/boat/boat
+x-access-token: eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyX2FkbWluIiwicm9sZXMiOiJhZG1pbix1c2VyIiwiZXhwIjoxNjcxNzM3NjcxLCJpYXQiOjE2NzE3MzU4NzEsImlzc3VlciI6InNlbWVzdGVyc3RhcnRjb2RlLWRhdDMiLCJ1c2VybmFtZSI6InVzZXJfYWRtaW4ifQ.cQQaQVlu3nUsZ7KzGx9ALanlLy3LWw2l9vo_r6TpNfU

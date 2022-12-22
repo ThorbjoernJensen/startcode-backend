@@ -1,7 +1,11 @@
 package entities;
 
+import dtos.BoatDTO;
+
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -29,6 +33,7 @@ public class Boat {
         this.name = name;
         this.image = image;
     }
+
 
     public Long getId() {
         return id;

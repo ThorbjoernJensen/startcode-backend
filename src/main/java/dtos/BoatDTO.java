@@ -1,11 +1,9 @@
 package dtos;
 
 import entities.Boat;
+import entities.Harbour;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 
 public class BoatDTO {
     private Long id;
@@ -13,28 +11,46 @@ public class BoatDTO {
     private String model;
     private String name;
     private String image;
+    private HarbourDTO harbourDTO;
+    private Set<OwnerDTO> ownerDTOs;
 
     public BoatDTO(Boat boat) {
-
-        if (boat.getId() != null){
+        if (boat.getId() != null) {
             this.id = boat.getId();
         }
         this.brand = boat.getBrand();
         this.model = boat.getModel();
         this.name = boat.getName();
         this.image = boat.getImage();
+        this.harbourDTO = new HarbourDTO(boat.getHarbour());
+        this.ownerDTOs = OwnerDTO.makeDTOSet(boat.getOwners());
     }
 
-    public static List<BoatDTO> makeDTOList(Set<Boat> boatList){
-        List<BoatDTO> boatDTOList = new ArrayList<>();
-        boatList.forEach(boat -> boatDTOList.add(new BoatDTO(boat)));
-        return boatDTOList;
+    public static Set<BoatDTO> makeDTOSet(List<Boat> boatList) {
+        Set<BoatDTO> boatDTOSet = new LinkedHashSet<>();
+        boatList.forEach(boat -> boatDTOSet.add(new BoatDTO(boat)));
+        return boatDTOSet;
     }
 
-    public static List<BoatDTO> makeDTOList(List<Boat> boatList){
-        List<BoatDTO> boatDTOList = new ArrayList<>();
-        boatList.forEach(boat -> boatDTOList.add(new BoatDTO(boat)));
-        return boatDTOList;
+    public static class HarbourDTO {
+        private Long id;
+
+        private String name;
+
+        private String address;
+
+        private Integer capacity;
+
+        public HarbourDTO(Harbour harbour) {
+            if (harbour.getId() != null) {
+                this.id = harbour.getId();
+            }
+            this.name = harbour.getName();
+            this.address = harbour.getAddress();
+            this.capacity = harbour.getCapacity();
+        }
+
+
     }
 
     @Override

@@ -100,4 +100,20 @@ public class APIFacadeTest {
         assertEquals(3, facade.getOwnerCount(), "Expects 3 rows in the database");
     }
 
+
+    @Test
+    void getOwnerById() {
+    }
+
+    @Test
+    void getAllOwners() {
+    }
+
+    @Test
+    void getAllHarbours() {
+    }
+
+    @Test
+    void getAllBoats() {
+    }
 }
