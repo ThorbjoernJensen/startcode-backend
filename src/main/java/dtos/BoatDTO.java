@@ -26,6 +26,34 @@ public class BoatDTO {
         this.ownerDTOs = OwnerDTO.makeDTOSet(boat.getOwners());
     }
 
+    public Long getId() {
+        return id;
+    }
+
+    public String getBrand() {
+        return brand;
+    }
+
+    public String getModel() {
+        return model;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public HarbourDTO getHarbourDTO() {
+        return harbourDTO;
+    }
+
+    public Set<OwnerDTO> getOwnerDTOs() {
+        return ownerDTOs;
+    }
+
     public static Set<BoatDTO> makeDTOSet(List<Boat> boatList) {
         Set<BoatDTO> boatDTOSet = new LinkedHashSet<>();
         boatList.forEach(boat -> boatDTOSet.add(new BoatDTO(boat)));

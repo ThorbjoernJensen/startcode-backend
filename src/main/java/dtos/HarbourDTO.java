@@ -22,6 +22,26 @@ public class HarbourDTO {
         this.boats = BoatDTO.makeDTOSet(harbour.getBoats());
     }
 
+    public Long getId() {
+        return id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public Integer getCapacity() {
+        return capacity;
+    }
+
+    public Set<BoatDTO> getBoats() {
+        return boats;
+    }
+
     public static Set<HarbourDTO> makeDTOSet(List<Harbour> harbours) {
         Set<HarbourDTO> harbourDTOSet = new HashSet<>();
         harbours.forEach(harbour -> harbourDTOSet.add(new HarbourDTO(harbour)));

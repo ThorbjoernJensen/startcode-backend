@@ -12,18 +12,35 @@ import utils.EMF_Creator;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 
+import java.util.List;
+import java.util.Set;
+
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class APIFacadeTest {
     private static EntityManagerFactory emf;
     private static APIFacade facade;
 
-    private Owner o1, o2, o3;
-    private OwnerDTO o1DTO, o2DTO, o3DTO;
-    private Harbour h1, h2, h3;
-    private HarbourDTO h1DTO, h2DTO, h3DTO;
-    private Boat b1, b2, b3;
-    private BoatDTO b1DTO, b2DTO, b3DTO;
+    private Owner o1;
+    private Owner o2;
+    private Owner o3;
+    private OwnerDTO o1DTO;
+    private OwnerDTO o2DTO;
+    private OwnerDTO o3DTO;
+    private Harbour h1;
+    private Harbour h2;
+    private Harbour h3;
+    private HarbourDTO h1DTO;
+    private HarbourDTO h2DTO;
+    private HarbourDTO h3DTO;
+    private Boat b1;
+    private Boat b2;
+    private Boat b3;
+    private BoatDTO b1DTO;
+    private BoatDTO b2DTO;
+    private BoatDTO b3DTO;
 
     public APIFacadeTest() {
     }
@@ -52,17 +69,17 @@ public class APIFacadeTest {
             em.createQuery("delete from Role").executeUpdate();
 
 
-            Owner o1 = new Owner("Skipper Bænt", "Persillehaven 40", "38383838");
-            Owner o2 = new Owner("Skipper Niels", "Persillehaven 42", "39393939");
-            Owner o3 = new Owner("Skipper Bente", "Persillehaven 38", "40404040");
+            o1 = new Owner("Skipper Bænt", "Persillehaven 40", "38383838");
+            o2 = new Owner("Skipper Niels", "Persillehaven 42", "39393939");
+            o3 = new Owner("Skipper Bente", "Persillehaven 38", "40404040");
 
-            Harbour h1 = new Harbour("Melsted Havn", "Melsted byvej", 8);
-            Harbour h2 = new Harbour("Nexø Havn", "Hovedvejen", 14);
-            Harbour h3 = new Harbour("Aakirkeby Havn", "Melsted byvej", 32);
+            h1 = new Harbour("Melsted Havn", "Melsted byvej", 8);
+            h2 = new Harbour("Nexø Havn", "Hovedvejen", 14);
+            h3 = new Harbour("Aakirkeby Havn", "Melsted byvej", 32);
 
-            Boat b1 = new Boat("Boatmaster", "speeder", "Martha", "https://img.fruugo.com/product/8/58/278398588_max.jpg");
-            Boat b2 = new Boat("Das Boot", "submarine", "Aase", "https://cdn.shopify.com/s/files/1/0626/0562/3537/products/31S6ddXfLmL.jpg?v=1659358008");
-            Boat b3 = new Boat("Hanger", "supersize", "King Lincoln", "https://upload.wikimedia.org/wikipedia/commons/2/2d/USS_Nimitz_%28CVN-68%29.jpg");
+            b1 = new Boat("Boatmaster", "speeder", "Martha", "https://img.fruugo.com/product/8/58/278398588_max.jpg");
+            b2 = new Boat("Das Boot", "submarine", "Aase", "https://cdn.shopify.com/s/files/1/0626/0562/3537/products/31S6ddXfLmL.jpg?v=1659358008");
+            b3 = new Boat("Hanger", "supersize", "King Lincoln", "https://upload.wikimedia.org/wikipedia/commons/2/2d/USS_Nimitz_%28CVN-68%29.jpg");
 
             b1.addOwner(o1);
             b2.addOwner(o1);
@@ -87,11 +104,22 @@ public class APIFacadeTest {
         } finally {
             em.close();
         }
+        o1DTO = new OwnerDTO(o1);
+        o2DTO = new OwnerDTO(o2);
+        o3DTO = new OwnerDTO(o3);
+        h1DTO = new HarbourDTO(h1);
+        h2DTO = new HarbourDTO(h2);
+        h3DTO = new HarbourDTO(h3);
+        b1DTO = new BoatDTO(b1);
+        b2DTO = new BoatDTO(b2);
+        b3DTO = new BoatDTO(b3);
+
     }
 
     @AfterEach
     public void tearDown() {
-//        Remove any data after each test was run
+//        we do this before setup, so we can see the data in workbench
+
     }
 
 
@@ -103,17 +131,39 @@ public class APIFacadeTest {
 
     @Test
     void getOwnerById() {
+        OwnerDTO expected = o1DTO;
+        Long id = o1DTO.getId();
+        OwnerDTO actual = facade.getOwnerById(id);
+        assertEquals(expected, actual);
+
     }
 
     @Test
     void getAllOwners() {
+        Set<OwnerDTO> owners = facade.getAllOwners();
+        int expexted = 3;
+        int actual = owners.size();
+        assertEquals(actual, expexted);
+        assertThat(owners, containsInAnyOrder(o1DTO, o2DTO, o3DTO));
+
     }
 
     @Test
     void getAllHarbours() {
+        Set<HarbourDTO> harbours = facade.getAllHarbours();
+        int expectedLength = 3;
+        int actualLength = harbours.size();
+        assertEquals(actualLength, expectedLength);
+        assertThat(harbours, containsInAnyOrder(h1DTO, h2DTO, h3DTO));
+
     }
 
     @Test
     void getAllBoats() {
+        Set<BoatDTO> boats = facade.getAllBoats();
+        int expectedLength = 3;
+        int actualLength = boats.size();
+        assertEquals(actualLength, expectedLength);
+        assertThat(boats, containsInAnyOrder(b1DTO, b2DTO, b3DTO));
     }
 }

@@ -49,13 +49,13 @@ public class APIFacade {
         return owner;
     }
 
-    public Owner getOwnerById(long id) { //throws RenameMeNotFoundException {
+    public OwnerDTO getOwnerById(long id) { //throws RenameMeNotFoundException {
         EntityManager em = emf.createEntityManager();
         Owner owner = em.find(Owner.class, id);
 //        if (rm == null)
 //            throw new RenameMeNotFoundException("The RenameMe entity with ID: "+id+" Was not found");
 //        return new RenameMeDTO(rm);
-        return owner;
+        return new OwnerDTO(owner);
     }
 
     public long getOwnerCount() {
