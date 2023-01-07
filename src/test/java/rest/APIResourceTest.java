@@ -7,6 +7,7 @@ import entities.*;
 import io.restassured.RestAssured;
 import io.restassured.parsing.Parser;
 import org.glassfish.grizzly.http.server.HttpServer;
+import org.glassfish.grizzly.http.util.HttpStatus;
 import org.glassfish.jersey.grizzly2.httpserver.GrizzlyHttpServerFactory;
 import org.glassfish.jersey.server.ResourceConfig;
 import org.junit.jupiter.api.AfterAll;
@@ -19,8 +20,12 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.ws.rs.core.UriBuilder;
 import java.net.URI;
+import java.util.List;
 
 import static io.restassured.RestAssured.given;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.containsInAnyOrder;
+import static org.hamcrest.core.IsEqual.equalTo;
 
 public class APIResourceTest {
     private static final int SERVER_PORT = 7777;
@@ -124,16 +129,16 @@ public class APIResourceTest {
             em.persist(h3);
             em.getTransaction().commit();
 
+
             o1DTO = new OwnerDTO(o1);
             o2DTO = new OwnerDTO(o2);
-            o1DTO = new OwnerDTO(o3);
+            o3DTO = new OwnerDTO(o3);
             h1DTO = new HarbourDTO(h1);
             h2DTO = new HarbourDTO(h2);
             h3DTO = new HarbourDTO(h3);
             b1DTO = new BoatDTO(b1);
             b2DTO = new BoatDTO(b2);
             b3DTO = new BoatDTO(b3);
-
         } finally {
             em.close();
         }
@@ -142,12 +147,7 @@ public class APIResourceTest {
 
     private static void login(String username, String password) {
         String json = String.format("{username: \"%s\", password: \"%s\"}", username, password);
-        securityToken = given()
-                .contentType("application/json")
-                .body(json)
-                .when().post("/login")
-                .then()
-                .extract().path("token");
+        securityToken = given().contentType("application/json").body(json).when().post("/login").then().extract().path("token");
     }
 
     private void logOut() {
@@ -159,13 +159,119 @@ public class APIResourceTest {
 
     @Test
     public void testAPIResourceIsResponding() {
+
         given().when().get("/boat").then().statusCode(200);
     }
+
     @Test
     public void testUserResourceIsResponding() {
-        given().when().get("/user").then().statusCode(200);
+
+        given()
+                .when()
+                .get("/user")
+                .then()
+                .statusCode(200);
     }
 
+
+    @Test
+    void welcomeGreeting() {
+        given()
+                .contentType("application/json")
+                .when().get("/boat")
+                .then().statusCode(200)
+                .assertThat()
+                .body("msg", equalTo("Hello boatsman"));
+    }
+
+    @Test
+    void getAllOwners() {
+        List<OwnerDTO> ownerDTOList;
+        ownerDTOList =
+                given()
+                        .contentType("application/json")
+                        .when()
+                        .get("/boat/owner")
+                        .then().statusCode(200)
+                        .assertThat()
+                        .extract().body().jsonPath().getList("", OwnerDTO.class);
+        System.out.println("fetched data:");
+        ownerDTOList.forEach(ownerDTO -> System.out.println(ownerDTO.getId() + ": " + ownerDTO.getName()));
+
+        System.out.println("lokal data");
+        System.out.println(o1DTO.getId() + ": " + o1DTO.getName());
+        System.out.println(o2DTO.getId() + ": " + o2DTO.getName());
+        System.out.println(o3DTO.getId() + ": " + o3DTO.getName());
+        assertThat(ownerDTOList, containsInAnyOrder(o1DTO, o2DTO, o3DTO));
+
+    }
+
+
+    @Test
+    void getAllOwners2() {
+        List<OwnerDTO> ownerDTOList;
+//       Set<HarbourDTOS> harbourDTOSet;
+//       String jsonString =
+
+        ownerDTOList =
+                given()
+                        .contentType("application/json")
+                        .when()
+                        .get("/boat/owner")
+                        .then()
+                        .assertThat()
+                        .statusCode(HttpStatus.OK_200.getStatusCode())
+                        .extract().body().jsonPath().getList("", OwnerDTO.class);
+
+//                        .extract().body().asString();
+//        System.out.println(jsonString);
+
+        assertThat(ownerDTOList, containsInAnyOrder(o1DTO, o2DTO, o3DTO));
+    }
+
+    @Test
+    void getAllHarbours() {
+        List<HarbourDTO> harbourDTOList;
+//       Set<HarbourDTOS> harbourDTOSet;
+//       String jsonString =
+
+        harbourDTOList =
+                given()
+                        .contentType("application/json")
+                        .when()
+                        .get("/boat/harbour")
+                        .then()
+                        .assertThat()
+                        .statusCode(HttpStatus.OK_200.getStatusCode())
+                        .extract().body().jsonPath().getList("", HarbourDTO.class);
+
+//                        .extract().body().asString();
+//        System.out.println(jsonString);
+
+       assertThat(harbourDTOList, containsInAnyOrder(h1DTO, h2DTO, h3DTO));
+
+
+//        Gson gson = new Gson();
+        //        JsonObject json = JsonParser.parseString(jsonString).getAsJsonObject();
+//        Type collectionType = new TypeToken<Collection<Integer>>(){}.getType();
+//        Collection<Integer> ints2 = gson.fromJson(json, collectionType);
+    }
+
+    @Test
+    void getAllBoats() {
+        List<BoatDTO> boatDTOList;
+        boatDTOList = given()
+                .contentType("application/json")
+                .when()
+                .get("/boat/boat")
+                .then()
+                .assertThat()
+                .statusCode(HttpStatus.OK_200.getStatusCode())
+                .extract().body().jsonPath().getList("", BoatDTO.class);
+        assertThat(boatDTOList, containsInAnyOrder(b1DTO, b2DTO, b3DTO));
+
+
+    }
 
 
 }

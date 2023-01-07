@@ -2,26 +2,23 @@ package rest;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
 import dtos.BoatDTO;
 import dtos.HarbourDTO;
 import dtos.OwnerDTO;
-import entities.Owner;
-import entities.User;
 import facades.APIFacade;
 import facades.Populator;
-import facades.UserFacade;
 import utils.EMF_Creator;
 
 import javax.annotation.security.DeclareRoles;
-import javax.annotation.security.RolesAllowed;
 import javax.persistence.EntityManagerFactory;
-import javax.ws.rs.*;
+import javax.ws.rs.GET;
+import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.SecurityContext;
 import javax.ws.rs.core.UriInfo;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -42,7 +39,7 @@ public class APIResource {
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public String getInfoForAll() {
+    public String welcomeGreeting() {
         return "{\"msg\":\"Hello boatsman\"}";
     }
 
@@ -61,8 +58,11 @@ public class APIResource {
     @Path("harbour")
 //    @RolesAllowed({"user"})
     public String getAllHarbours() {
-        Set<HarbourDTO> harbourDTOList = FACADE.getAllHarbours();
-        return GSON.toJson(harbourDTOList);
+        Set<HarbourDTO> harbourDTOSet = FACADE.getAllHarbours();
+//        List<HarbourDTO> harbourDTOList = new ArrayList<>();
+//        harbourDTOList.addAll(harbourDTOSet);
+//        return GSON.toJson(harbourDTOList);
+        return GSON.toJson(harbourDTOSet);
     }
     @GET
     @Produces(MediaType.APPLICATION_JSON)
@@ -70,7 +70,9 @@ public class APIResource {
 //    @RolesAllowed({"user"})
     public String getAllBoats() {
         Set<BoatDTO> boatDTOSet = FACADE.getAllBoats();
-        return GSON.toJson(boatDTOSet);
+        List<BoatDTO> boatDTOList = new ArrayList<>();
+        boatDTOList.addAll(boatDTOSet);
+        return GSON.toJson(boatDTOList);
     }
 
 

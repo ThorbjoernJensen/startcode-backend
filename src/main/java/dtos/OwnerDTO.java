@@ -77,6 +77,15 @@ public class OwnerDTO {
         }
     }
 
+//    @Override
+//    public boolean equals(Object o) {
+//        if (this == o) return true;
+//        if (o == null || getClass() != o.getClass()) return false;
+//        OwnerDTO ownerDTO = (OwnerDTO) o;
+//        return Objects.equals(id, ownerDTO.id) && Objects.equals(name, ownerDTO.name) && Objects.equals(address, ownerDTO.address) && Objects.equals(phone, ownerDTO.phone);
+//    }
+
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
