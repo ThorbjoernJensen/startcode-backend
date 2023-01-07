@@ -22,6 +22,7 @@ public class HarbourDTO {
         this.boats = BoatDTO.makeDTOSet(harbour.getBoats());
     }
 
+
     public Long getId() {
         return id;
     }

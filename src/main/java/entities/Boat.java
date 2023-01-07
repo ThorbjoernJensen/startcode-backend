@@ -3,9 +3,7 @@ package entities;
 import dtos.BoatDTO;
 
 import javax.persistence.*;
-import java.util.ArrayList;
 import java.util.LinkedHashSet;
-import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -27,13 +25,25 @@ public class Boat {
     public Boat() {
     }
 
-    public Boat(String brand, String model, String name, String image) {
+    public Boat(BoatDTO boatDTO) {
+        this.brand = boatDTO.getBrand();
+        this.model = boatDTO.getModel();
+        this.name = boatDTO.getName();
+        this.image = boatDTO.getImage();
+        this.harbour = new Harbour(boatDTO.getHarbourDTO().getId(),
+                boatDTO.getHarbourDTO().getName(),
+                boatDTO.getHarbourDTO().getAddress(),
+                boatDTO.getHarbourDTO().getCapacity());
+    }
+
+    public Boat(String brand, String model, String name, String image, Harbour harbour) {
         this.brand = brand;
         this.model = model;
         this.name = name;
         this.image = image;
-    }
+        this.harbour = harbour;
 
+    }
 
     public Long getId() {
         return id;

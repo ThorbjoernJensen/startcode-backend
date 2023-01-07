@@ -11,9 +11,7 @@ import utils.EMF_Creator;
 
 import javax.annotation.security.DeclareRoles;
 import javax.persistence.EntityManagerFactory;
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
+import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.SecurityContext;
@@ -64,6 +62,7 @@ public class APIResource {
 //        return GSON.toJson(harbourDTOList);
         return GSON.toJson(harbourDTOSet);
     }
+
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("boat")
@@ -73,6 +72,20 @@ public class APIResource {
         List<BoatDTO> boatDTOList = new ArrayList<>();
         boatDTOList.addAll(boatDTOSet);
         return GSON.toJson(boatDTOList);
+    }
+
+    @POST
+    @Consumes("application/json")
+    @Produces("application/json")
+    @Path("boat")
+    public String createBoat(String boatJSON) {
+        System.out.println("her har vi boatJSON:" + boatJSON);
+        BoatDTO newBoatDTO = GSON.fromJson(boatJSON, BoatDTO.class);
+        System.out.printf("her er vi kommet til efter GSON");
+//        Boat newBoat = new Boat(newBoatDTO);
+        BoatDTO createdBoatDTO = FACADE.createBoat(newBoatDTO);
+        return GSON.toJson(createdBoatDTO);
+
     }
 
 

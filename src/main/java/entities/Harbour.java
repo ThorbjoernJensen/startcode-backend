@@ -29,6 +29,14 @@ public class Harbour {
         this.capacity = capacity;
     }
 
+    public Harbour(Long id, String name, String address, Integer capacity) {
+        this.id = id;
+        this.name = name;
+        this.address = address;
+        this.capacity = capacity;
+    }
+
+
     public Long getId() {
         return id;
     }

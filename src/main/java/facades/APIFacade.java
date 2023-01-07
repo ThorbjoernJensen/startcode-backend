@@ -6,7 +6,6 @@ import dtos.OwnerDTO;
 import entities.Boat;
 import entities.Harbour;
 import entities.Owner;
-import utils.EMF_Creator;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -34,20 +33,6 @@ public class APIFacade {
     }
 
     //    public Boat create(RenameMeDTO rm){
-    public Owner create(Owner owner) {
-        Owner newOwner = owner;
-
-        EntityManager em = getEntityManager();
-        try {
-            em.getTransaction().begin();
-            em.persist(newOwner);
-            em.getTransaction().commit();
-        } finally {
-            em.close();
-        }
-//        return new RenameMeDTO(rme);
-        return owner;
-    }
 
     public OwnerDTO getOwnerById(long id) { //throws RenameMeNotFoundException {
         EntityManager em = emf.createEntityManager();
@@ -83,7 +68,7 @@ public class APIFacade {
         List<Harbour> harbours = query.getResultList();
 //        List<HarbourDTO> harbourDTOList = HarbourDTO.makeDTOSet(harbours);
         Set<HarbourDTO> harbourDTOList = HarbourDTO.makeDTOSet(harbours);
-        System.out.println("fra facade: " +harbourDTOList.toString());
+        System.out.println("fra facade: " + harbourDTOList.toString());
         return harbourDTOList;
     }
 
@@ -93,6 +78,36 @@ public class APIFacade {
         List<Boat> boatList = query.getResultList();
         Set<BoatDTO> boatDTOSet = BoatDTO.makeDTOSet(boatList);
         return boatDTOSet;
+    }
+
+    public Owner create(Owner owner) {
+        Owner newOwner = owner;
+
+        EntityManager em = getEntityManager();
+        try {
+            em.getTransaction().begin();
+            em.persist(newOwner);
+            em.getTransaction().commit();
+        } finally {
+            em.close();
+        }
+//        return new RenameMeDTO(rme);
+        return owner;
+    }
+
+    public BoatDTO createBoat(BoatDTO newBoatDTO) {
+        Boat newBoat = new Boat(newBoatDTO);
+        EntityManager em = getEntityManager();
+        try {
+            em.getTransaction().begin();
+            em.persist(newBoat);
+            em.getTransaction().commit();
+        }
+        finally {
+            em.close();
+        }
+        return new BoatDTO(newBoat);
+
     }
 }
 

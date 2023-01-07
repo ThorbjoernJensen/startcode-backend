@@ -75,9 +75,9 @@ public class APIFacadeTest {
             h2 = new Harbour("Nexø Havn", "Hovedvejen", 14);
             h3 = new Harbour("Aakirkeby Havn", "Melsted byvej", 32);
 
-            b1 = new Boat("Boatmaster", "speeder", "Martha", "https://img.fruugo.com/product/8/58/278398588_max.jpg");
-            b2 = new Boat("Das Boot", "submarine", "Aase", "https://cdn.shopify.com/s/files/1/0626/0562/3537/products/31S6ddXfLmL.jpg?v=1659358008");
-            b3 = new Boat("Hanger", "supersize", "King Lincoln", "https://upload.wikimedia.org/wikipedia/commons/2/2d/USS_Nimitz_%28CVN-68%29.jpg");
+            b1 = new Boat("Boatmaster", "speeder", "Martha", "https://img.fruugo.com/product/8/58/278398588_max.jpg", h1);
+            b2 = new Boat("Das Boot", "submarine", "Aase", "https://cdn.shopify.com/s/files/1/0626/0562/3537/products/31S6ddXfLmL.jpg?v=1659358008", h3);
+            b3 = new Boat("Hanger", "supersize", "King Lincoln", "https://upload.wikimedia.org/wikipedia/commons/2/2d/USS_Nimitz_%28CVN-68%29.jpg", h3);
 
             b1.addOwner(o1);
             b2.addOwner(o1);
@@ -85,9 +85,9 @@ public class APIFacadeTest {
             b3.addOwner(o3);
             b3.addOwner(o3);
 
-            h1.addBoat(b1);
-            h3.addBoat(b2);
-            h3.addBoat(b3);
+//            h1.addBoat(b1);
+//            h3.addBoat(b2);
+//            h3.addBoat(b3);
 
             em.persist(o1);
             em.persist(o2);
@@ -163,5 +163,15 @@ public class APIFacadeTest {
         int actualLength = boats.size();
         assertEquals(actualLength, expectedLength);
         assertThat(boats, containsInAnyOrder(b1DTO, b2DTO, b3DTO));
+
+    }
+    @Test
+    void createBoat(){
+        Boat newBoat = new Boat("NyBåd", "speedbåd", "Myggen", "http://imageurl", h2);
+        BoatDTO newBoatDTO = new BoatDTO(newBoat);
+        facade.createBoat(newBoatDTO);
+
+
+
     }
 }

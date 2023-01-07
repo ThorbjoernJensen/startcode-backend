@@ -26,6 +26,13 @@ public class BoatDTO {
         this.ownerDTOs = OwnerDTO.makeDTOSet(boat.getOwners());
     }
 
+    public BoatDTO(String brand, String model, String name, String image) {
+        this.brand = brand;
+        this.model = model;
+        this.name = name;
+        this.image = image;
+    }
+
     public Long getId() {
         return id;
     }
@@ -78,7 +85,21 @@ public class BoatDTO {
             this.capacity = harbour.getCapacity();
         }
 
+        public Long getId() {
+            return id;
+        }
 
+        public String getName() {
+            return name;
+        }
+
+        public String getAddress() {
+            return address;
+        }
+
+        public Integer getCapacity() {
+            return capacity;
+        }
     }
 
     @Override
