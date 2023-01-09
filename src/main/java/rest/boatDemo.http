@@ -20,18 +20,41 @@ x-access-token: eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyX2FkbWluIiwicm9sZXMiOiJhZG1
 ### get owners from deployed
 GET https://dengamlegymnastiksal.dk/tomcat/boats/api/boat/owner
 
-###
+### populate db local
 GET http://localhost:8080/boats/api/boat/populate
 
 ### get harbours from localhost
 GET http://localhost:8080/boats/api/boat/harbour
 #x-access-token: eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyX2FkbWluIiwicm9sZXMiOiJhZG1pbix1c2VyIiwiZXhwIjoxNjcxNzM3NjcxLCJpYXQiOjE2NzE3MzU4NzEsImlzc3VlciI6InNlbWVzdGVyc3RhcnRjb2RlLWRhdDMiLCJ1c2VybmFtZSI6InVzZXJfYWRtaW4ifQ.cQQaQVlu3nUsZ7KzGx9ALanlLy3LWw2l9vo_r6TpNfU
+
+### get harbours from deployed
+GET https://dengamlegymnastiksal.dk/tomcat/boats/api/boat/harbour
+#x-access-token: eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyX2FkbWluIiwicm9sZXMiOiJhZG1pbix1c2VyIiwiZXhwIjoxNjcxNzM3NjcxLCJpYXQiOjE2NzE3MzU4NzEsImlzc3VlciI6InNlbWVzdGVyc3RhcnRjb2RlLWRhdDMiLCJ1c2VybmFtZSI6InVzZXJfYWRtaW4ifQ.cQQaQVlu3nUsZ7KzGx9ALanlLy3LWw2l9vo_r6TpNfU
+
 ### get boats from localhost
 GET http://localhost:8080/boats/api/boat/boat
 x-access-token: eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyX2FkbWluIiwicm9sZXMiOiJhZG1pbix1c2VyIiwiZXhwIjoxNjcxNzM3NjcxLCJpYXQiOjE2NzE3MzU4NzEsImlzc3VlciI6InNlbWVzdGVyc3RhcnRjb2RlLWRhdDMiLCJ1c2VybmFtZSI6InVzZXJfYWRtaW4ifQ.cQQaQVlu3nUsZ7KzGx9ALanlLy3LWw2l9vo_r6TpNfU
 
-### create new boat
+### create new boat localhost
 POST http://localhost:8080/boats/api/boat/boat
+Content-Type: application/json
+accept: application/json
+
+{
+  "brand": "Speeder",
+  "model": "luxus",
+  "name": "Postspeederen",
+  "image": "https://upload.wikimedia.org/wikipedia/commons/2/2d/USS_Nimitz_%28CVN-68%29.jpg",
+  "harbourDTO": {
+    "id": 1,
+    "name": "Melsted Havn",
+    "address": "Melsted byvej",
+    "capacity": 8
+  }
+}
+
+### create new boat deployed
+POST https://dengamlegymnastiksal.dk/tomcat/boats/api/boat/boat
 Content-Type: application/json
 accept: application/json
 

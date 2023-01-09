@@ -36,11 +36,15 @@ public class APIFacade {
 
     public OwnerDTO getOwnerById(long id) { //throws RenameMeNotFoundException {
         EntityManager em = emf.createEntityManager();
-        Owner owner = em.find(Owner.class, id);
+        try {
+            Owner owner = em.find(Owner.class, id);
 //        if (rm == null)
 //            throw new RenameMeNotFoundException("The RenameMe entity with ID: "+id+" Was not found");
 //        return new RenameMeDTO(rm);
-        return new OwnerDTO(owner);
+            return new OwnerDTO(owner);
+        } finally {
+            em.close();
+        }
     }
 
     public long getOwnerCount() {
@@ -54,30 +58,45 @@ public class APIFacade {
     }
 
     public Set<OwnerDTO> getAllOwners() {
+
         EntityManager em = emf.createEntityManager();
-        TypedQuery<Owner> query = em.createQuery("SELECT o FROM Owner o", Owner.class);
-        List<Owner> owners = query.getResultList();
-        Set<OwnerDTO> ownerDTOList = OwnerDTO.makeDTOSet(owners);
+        try {
+            TypedQuery<Owner> query = em.createQuery("SELECT o FROM Owner o", Owner.class);
+            List<Owner> owners = query.getResultList();
+            Set<OwnerDTO> ownerDTOList = OwnerDTO.makeDTOSet(owners);
 //        return RenameMeDTO.getDtos(rms);
-        return ownerDTOList;
+            return ownerDTOList;
+        } finally {
+            em.close();
+        }
     }
 
     public Set<HarbourDTO> getAllHarbours() {
         EntityManager em = getEntityManager();
-        TypedQuery<Harbour> query = em.createQuery("SELECT h FROM Harbour h", Harbour.class);
-        List<Harbour> harbours = query.getResultList();
+        try {
+            TypedQuery<Harbour> query = em.createQuery("SELECT h FROM Harbour h", Harbour.class);
+            List<Harbour> harbours = query.getResultList();
 //        List<HarbourDTO> harbourDTOList = HarbourDTO.makeDTOSet(harbours);
-        Set<HarbourDTO> harbourDTOList = HarbourDTO.makeDTOSet(harbours);
-        System.out.println("fra facade: " + harbourDTOList.toString());
-        return harbourDTOList;
+            Set<HarbourDTO> harbourDTOList = HarbourDTO.makeDTOSet(harbours);
+            System.out.println("fra facade: ");
+            harbourDTOList.forEach(harbourDTO -> System.out.println(harbourDTO.toString()));
+            return harbourDTOList;
+        } finally {
+            em.close();
+        }
     }
+
 
     public Set<BoatDTO> getAllBoats() {
         EntityManager em = getEntityManager();
-        TypedQuery<Boat> query = em.createQuery("SELECT b FROM Boat b", Boat.class);
-        List<Boat> boatList = query.getResultList();
-        Set<BoatDTO> boatDTOSet = BoatDTO.makeDTOSet(boatList);
-        return boatDTOSet;
+        try {
+            TypedQuery<Boat> query = em.createQuery("SELECT b FROM Boat b", Boat.class);
+            List<Boat> boatList = query.getResultList();
+            Set<BoatDTO> boatDTOSet = BoatDTO.makeDTOSet(boatList);
+            return boatDTOSet;
+        } finally {
+            em.close();
+        }
     }
 
     public Owner create(Owner owner) {
@@ -102,8 +121,7 @@ public class APIFacade {
             em.getTransaction().begin();
             em.persist(newBoat);
             em.getTransaction().commit();
-        }
-        finally {
+        } finally {
             em.close();
         }
         return new BoatDTO(newBoat);
