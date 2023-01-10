@@ -1,7 +1,7 @@
 package entities;
 
 import javax.persistence.*;
-import java.util.LinkedHashSet;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -15,7 +15,7 @@ public class Owner {
     private String address;
     private String phone;
     @ManyToMany
-    private Set<Boat> boats = new LinkedHashSet<>();
+    private Set<Boat> boats = new HashSet<>();
 
     public Owner() {
     }

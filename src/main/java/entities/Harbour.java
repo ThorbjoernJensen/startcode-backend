@@ -1,7 +1,7 @@
 package entities;
 
 import javax.persistence.*;
-import java.util.LinkedHashSet;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -9,7 +9,7 @@ import java.util.Set;
 public class Harbour {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "harbour_id", nullable = false)
+    @Column(name = "id", nullable = false)
     private Long id;
 
     private String name;
@@ -17,8 +17,8 @@ public class Harbour {
     private String address;
 
     private Integer capacity;
-    @OneToMany (mappedBy = "harbour")
-    private Set<Boat> boats = new LinkedHashSet<>();
+    @OneToMany (mappedBy = "harbour")//, cascade = { CascadeType.PERSIST}) // Non owning side
+    private Set<Boat> boats = new HashSet<Boat>();
 
     public Harbour() {
     }
@@ -77,4 +77,10 @@ public class Harbour {
         this.boats.add(boat);
         boat.setHarbour(this);
     }
+
+    public void removeBoat(Boat boat){
+        this.boats.remove(boat);
+        boat.setHarbour(null);
+    }
+
 }

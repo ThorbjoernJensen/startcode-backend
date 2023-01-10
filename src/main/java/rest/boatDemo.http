@@ -41,10 +41,10 @@ Content-Type: application/json
 accept: application/json
 
 {
-  "brand": "Speeder",
+  "brand": "Speeder14",
   "model": "luxus",
-  "name": "Postspeederen",
-  "image": "https://upload.wikimedia.org/wikipedia/commons/2/2d/USS_Nimitz_%28CVN-68%29.jpg",
+  "name": "Postspeederen2",
+  "image": "https://pionerboat.com/wp-content/uploads/2022/05/Pioner15_Product_image_shop_nov2021.jpg",
   "harbourDTO": {
     "id": 1,
     "name": "Melsted Havn",
@@ -59,10 +59,10 @@ Content-Type: application/json
 accept: application/json
 
 {
-  "brand": "Speeder",
-  "model": "luxus",
+  "brand": "Speeder2",
+  "model": "luxus2",
   "name": "Postspeederen",
-  "image": "https://upload.wikimedia.org/wikipedia/commons/2/2d/USS_Nimitz_%28CVN-68%29.jpg",
+  "image": "https://pionerboat.com/wp-content/uploads/2022/05/Pioner15_Product_image_shop_nov2021.jpg",
   "harbourDTO": {
     "id": 1,
     "name": "Melsted Havn",

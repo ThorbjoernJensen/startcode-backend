@@ -46,7 +46,7 @@ public class APIFacadeTest {
     @BeforeAll
     public static void setUpClass() {
         emf = EMF_Creator.createEntityManagerFactoryForTest();
-        facade = APIFacade.getFacadeInstance(emf);
+        facade = APIFacade.getInstance(emf);
     }
 
     @AfterAll
@@ -75,9 +75,9 @@ public class APIFacadeTest {
             h2 = new Harbour("Nexø Havn", "Hovedvejen", 14);
             h3 = new Harbour("Aakirkeby Havn", "Melsted byvej", 32);
 
-            b1 = new Boat("Boatmaster", "speeder", "Martha", "https://img.fruugo.com/product/8/58/278398588_max.jpg", h1);
-            b2 = new Boat("Das Boot", "submarine", "Aase", "https://cdn.shopify.com/s/files/1/0626/0562/3537/products/31S6ddXfLmL.jpg?v=1659358008", h3);
-            b3 = new Boat("Hanger", "supersize", "King Lincoln", "https://upload.wikimedia.org/wikipedia/commons/2/2d/USS_Nimitz_%28CVN-68%29.jpg", h3);
+            b1 = new Boat("Boatmaster", "speeder", "Martha", "https://img.fruugo.com/product/8/58/278398588_max.jpg");
+            b2 = new Boat("Das Boot", "submarine", "Aase", "https://cdn.shopify.com/s/files/1/0626/0562/3537/products/31S6ddXfLmL.jpg?v=1659358008");
+            b3 = new Boat("Hanger", "supersize", "King Lincoln", "https://upload.wikimedia.org/wikipedia/commons/2/2d/USS_Nimitz_%28CVN-68%29.jpg");
 
             b1.addOwner(o1);
             b2.addOwner(o1);
@@ -167,7 +167,8 @@ public class APIFacadeTest {
     }
     @Test
     void createBoat(){
-        Boat newBoat = new Boat("NyBåd", "speedbåd", "Myggen", "http://imageurl", h2);
+        Boat newBoat = new Boat("NyBåd", "speedbåd", "Myggen", "http://imageurl");
+        newBoat.setHarbour(h1);
         BoatDTO newBoatDTO = new BoatDTO(newBoat);
         facade.createBoat(newBoatDTO);
 

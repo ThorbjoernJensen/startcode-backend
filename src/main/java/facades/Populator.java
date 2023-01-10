@@ -18,7 +18,7 @@ public class Populator {
     private static APIFacade instance;
     private static EntityManagerFactory emf = EMF_Creator.createEntityManagerFactory();
 
-    private static final APIFacade FACADE = APIFacade.getFacadeInstance(emf);
+    private static final APIFacade FACADE = APIFacade.getInstance(emf);
 
     public static void populate() {
 
@@ -50,19 +50,19 @@ public class Populator {
         Harbour h2 = new Harbour("Nexø Havn", "Hovedvejen", 14);
         Harbour h3 = new Harbour("Aakirkeby Havn", "Melsted byvej", 32);
 
-        Boat b1 = new Boat("Boatmaster", "speeder", "Martha", "https://img.fruugo.com/product/8/58/278398588_max.jpg", h1);
-        Boat b2 = new Boat("Das Boot", "submarine", "Aase", "https://cdn.shopify.com/s/files/1/0626/0562/3537/products/31S6ddXfLmL.jpg?v=1659358008", h3);
-        Boat b3 = new Boat("Hanger", "supersize", "King Lincoln", "https://upload.wikimedia.org/wikipedia/commons/2/2d/USS_Nimitz_%28CVN-68%29.jpg", h3);
+        Boat b1 = new Boat("Boatmaster", "speeder", "Martha", "https://img.fruugo.com/product/8/58/278398588_max.jpg");
+        Boat b2 = new Boat("Das Boot", "submarine", "Aase", "https://cdn.shopify.com/s/files/1/0626/0562/3537/products/31S6ddXfLmL.jpg?v=1659358008");
+        Boat b3 = new Boat("Hanger", "supersize", "King Lincoln", "https://upload.wikimedia.org/wikipedia/commons/2/2d/USS_Nimitz_%28CVN-68%29.jpg");
 
         b1.addOwner(o1);
         b2.addOwner(o1);
         b2.addOwner(o2);
-        b3.addOwner(o3);
+        b3.addOwner(o1);
         b3.addOwner(o3);
 
-//        h1.addBoat(b1);
-//        h3.addBoat(b2);
-//        h3.addBoat(b3);
+        h1.addBoat(b1);
+        h3.addBoat(b2);
+        h3.addBoat(b3);
 
         em.persist(o1);
         em.persist(o2);
@@ -83,7 +83,7 @@ public class Populator {
 //        Create dummy -owners
 //        FACADE.create(new Owner("Preben"));
 //        FACADE.create(new Owner("Poul"));
-
+        em.close();
     }
 
 }

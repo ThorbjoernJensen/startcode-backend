@@ -20,7 +20,8 @@ public class APIFacade {
     private APIFacade() {
     }
 
-    public static APIFacade getFacadeInstance(EntityManagerFactory _emf) {
+
+    public static APIFacade getInstance(EntityManagerFactory _emf) {
         if (instance == null) {
             emf = _emf;
             instance = new APIFacade();
@@ -31,8 +32,6 @@ public class APIFacade {
     private EntityManager getEntityManager() {
         return emf.createEntityManager();
     }
-
-    //    public Boat create(RenameMeDTO rm){
 
     public OwnerDTO getOwnerById(long id) { //throws RenameMeNotFoundException {
         EntityManager em = emf.createEntityManager();
@@ -48,7 +47,7 @@ public class APIFacade {
     }
 
     public long getOwnerCount() {
-        EntityManager em = getEntityManager();
+        EntityManager em = emf.createEntityManager();
         try {
             long ownerCount = (long) em.createQuery("SELECT COUNT(o) FROM Owner o").getSingleResult();
             return ownerCount;
@@ -58,7 +57,6 @@ public class APIFacade {
     }
 
     public Set<OwnerDTO> getAllOwners() {
-
         EntityManager em = emf.createEntityManager();
         try {
             TypedQuery<Owner> query = em.createQuery("SELECT o FROM Owner o", Owner.class);
@@ -72,15 +70,31 @@ public class APIFacade {
     }
 
     public Set<HarbourDTO> getAllHarbours() {
-        EntityManager em = getEntityManager();
+        EntityManager em = emf.createEntityManager();
         try {
+            em.getTransaction().begin();
             TypedQuery<Harbour> query = em.createQuery("SELECT h FROM Harbour h", Harbour.class);
             List<Harbour> harbours = query.getResultList();
+            harbours.forEach(harbour -> harbour.getBoats().forEach(boat -> System.out.println("boat:" + boat.getId())));
 //        List<HarbourDTO> harbourDTOList = HarbourDTO.makeDTOSet(harbours);
             Set<HarbourDTO> harbourDTOList = HarbourDTO.makeDTOSet(harbours);
             System.out.println("fra facade: ");
             harbourDTOList.forEach(harbourDTO -> System.out.println(harbourDTO.toString()));
+            em.getTransaction().commit();
             return harbourDTOList;
+        } finally {
+            em.close();
+        }
+    }
+
+    public Set<HarbourDTO> getAllHarbours2() {
+        EntityManager em = emf.createEntityManager();
+        try {
+            TypedQuery<Harbour> query = em.createQuery("Select h From Harbour h LEFT JOIN FETCH h.boats", Harbour.class);
+//            ist<Author> authors = em.createQuery("SELECT a FROM Author a LEFT JOIN FETCH a.books", Author.class).getResultList();
+            List<Harbour> harbourList = query.getResultList();
+            harbourList.forEach(harbour -> harbour.getBoats().forEach(boat -> System.out.println("boat:" + boat.getId())));
+            return HarbourDTO.makeDTOSet(harbourList);
         } finally {
             em.close();
         }
@@ -88,8 +102,9 @@ public class APIFacade {
 
 
     public Set<BoatDTO> getAllBoats() {
-        EntityManager em = getEntityManager();
+        EntityManager em = emf.createEntityManager();
         try {
+
             TypedQuery<Boat> query = em.createQuery("SELECT b FROM Boat b", Boat.class);
             List<Boat> boatList = query.getResultList();
             Set<BoatDTO> boatDTOSet = BoatDTO.makeDTOSet(boatList);
@@ -102,29 +117,41 @@ public class APIFacade {
     public Owner create(Owner owner) {
         Owner newOwner = owner;
 
-        EntityManager em = getEntityManager();
+        EntityManager em = emf.createEntityManager();
         try {
             em.getTransaction().begin();
             em.persist(newOwner);
             em.getTransaction().commit();
+            return owner;
         } finally {
             em.close();
         }
 //        return new RenameMeDTO(rme);
-        return owner;
     }
 
     public BoatDTO createBoat(BoatDTO newBoatDTO) {
         Boat newBoat = new Boat(newBoatDTO);
-        EntityManager em = getEntityManager();
+        Harbour harbour;
+        EntityManager em = emf.createEntityManager();
         try {
             em.getTransaction().begin();
+            harbour = em.find(Harbour.class, newBoat.getHarbour().getId());
+            harbour.addBoat(newBoat);
+
             em.persist(newBoat);
             em.getTransaction().commit();
+            return new BoatDTO(newBoat);
         } finally {
             em.close();
+            System.out.println("vi nåede til em close i create boat");
         }
-        return new BoatDTO(newBoat);
+
+//        em.getTransaction().begin();
+//        updateAddress(newPerson, em);
+//        newPerson.getPhone().forEach(em::persist);
+//        em.persist(newPerson);
+//        em.getTransaction().commit();
+//        return newPerson;
 
     }
 }

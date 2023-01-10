@@ -31,7 +31,7 @@ public class APIResource {
     @Context
     SecurityContext securityContext;
 
-    private static final APIFacade FACADE = APIFacade.getFacadeInstance(EMF);
+    private static final APIFacade FACADE = APIFacade.getInstance(EMF);
     private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
     private static Populator populator;
 
@@ -57,6 +57,7 @@ public class APIResource {
 //    @RolesAllowed({"user"})
     public String getAllHarbours() {
         Set<HarbourDTO> harbourDTOSet = FACADE.getAllHarbours();
+        System.out.println("vi var i harbour endpoint");
 //        List<HarbourDTO> harbourDTOList = new ArrayList<>();
 //        harbourDTOList.addAll(harbourDTOSet);
 //        return GSON.toJson(harbourDTOList);
@@ -72,6 +73,17 @@ public class APIResource {
         List<BoatDTO> boatDTOList = new ArrayList<>();
         boatDTOList.addAll(boatDTOSet);
         return GSON.toJson(boatDTOList);
+    }
+
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("harbour2")
+//    @RolesAllowed({"user"})
+    public String getAllHarbours2() {
+        Set<HarbourDTO> harbourDTOSet = FACADE.getAllHarbours2();
+
+//        harbourDTOList.addAll(HarbourDTOSet);
+        return GSON.toJson(harbourDTOSet);
     }
 
     @POST

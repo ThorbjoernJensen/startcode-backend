@@ -3,7 +3,7 @@ package entities;
 import dtos.BoatDTO;
 
 import javax.persistence.*;
-import java.util.LinkedHashSet;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -18,8 +18,8 @@ public class Boat {
     private String name;
     private String image;
     @ManyToMany(mappedBy = "boats")
-    private Set<Owner> owners = new LinkedHashSet<>();
-    @ManyToOne
+    private Set<Owner> owners = new HashSet<>();
+    @ManyToOne //(cascade = { CascadeType.PERSIST, CascadeType.MERGE}) //owning side
     private Harbour harbour;
 
     public Boat() {
@@ -36,12 +36,12 @@ public class Boat {
                 boatDTO.getHarbourDTO().getCapacity());
     }
 
-    public Boat(String brand, String model, String name, String image, Harbour harbour) {
+    public Boat(String brand, String model, String name, String image/*, Harbour harbour*/) {
         this.brand = brand;
         this.model = model;
         this.name = name;
         this.image = image;
-        this.harbour = harbour;
+//        this.harbour = harbour;
 
     }
 
