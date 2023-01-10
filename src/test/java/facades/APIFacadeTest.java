@@ -85,9 +85,9 @@ public class APIFacadeTest {
             b3.addOwner(o3);
             b3.addOwner(o3);
 
-//            h1.addBoat(b1);
-//            h3.addBoat(b2);
-//            h3.addBoat(b3);
+            h1.addBoat(b1);
+            h3.addBoat(b2);
+            h3.addBoat(b3);
 
             em.persist(o1);
             em.persist(o2);
@@ -165,13 +165,15 @@ public class APIFacadeTest {
         assertThat(boats, containsInAnyOrder(b1DTO, b2DTO, b3DTO));
 
     }
+
     @Test
-    void createBoat(){
+    void createBoat() {
         Boat newBoat = new Boat("NyBåd", "speedbåd", "Myggen", "http://imageurl");
         newBoat.setHarbour(h1);
         BoatDTO newBoatDTO = new BoatDTO(newBoat);
-        facade.createBoat(newBoatDTO);
+        BoatDTO actual = facade.createBoat(newBoatDTO);
 
+        assertEquals(4, facade.getAllBoats().size());
 
 
     }
