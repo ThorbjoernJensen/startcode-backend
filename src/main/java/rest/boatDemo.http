@@ -35,6 +35,12 @@ GET https://dengamlegymnastiksal.dk/tomcat/boats/api/boat/harbour
 GET http://localhost:8080/boats/api/boat/boat
 x-access-token: eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyX2FkbWluIiwicm9sZXMiOiJhZG1pbix1c2VyIiwiZXhwIjoxNjcxNzM3NjcxLCJpYXQiOjE2NzE3MzU4NzEsImlzc3VlciI6InNlbWVzdGVyc3RhcnRjb2RlLWRhdDMiLCJ1c2VybmFtZSI6InVzZXJfYWRtaW4ifQ.cQQaQVlu3nUsZ7KzGx9ALanlLy3LWw2l9vo_r6TpNfU
 
+
+### get boats from deployed
+GET https://dengamlegymnastiksal.dk/tomcat/boats/api/boat/boat
+x-access-token: eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyX2FkbWluIiwicm9sZXMiOiJhZG1pbix1c2VyIiwiZXhwIjoxNjcxNzM3NjcxLCJpYXQiOjE2NzE3MzU4NzEsImlzc3VlciI6InNlbWVzdGVyc3RhcnRjb2RlLWRhdDMiLCJ1c2VybmFtZSI6InVzZXJfYWRtaW4ifQ.cQQaQVlu3nUsZ7KzGx9ALanlLy3LWw2l9vo_r6TpNfU
+
+
 ### create new boat localhost
 POST http://localhost:8080/boats/api/boat/boat
 Content-Type: application/json
@@ -59,9 +65,9 @@ Content-Type: application/json
 accept: application/json
 
 {
-  "brand": "Speeder2",
+  "brand": "Speeder3",
   "model": "luxus2",
-  "name": "Postspeederen",
+  "name": "Postspeederen2",
   "image": "https://pionerboat.com/wp-content/uploads/2022/05/Pioner15_Product_image_shop_nov2021.jpg",
   "harbourDTO": {
     "id": 1,

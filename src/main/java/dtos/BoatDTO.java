@@ -11,8 +11,8 @@ public class BoatDTO {
     private String model;
     private String name;
     private String image;
-    private HarbourDTO harbourDTO;
-    private Set<OwnerDTO> ownerDTOs;
+    private HarbourDTO harbour;
+    private Set<OwnerDTO> owners;
 
     public BoatDTO(Boat boat) {
         if (boat.getId() != null) {
@@ -22,8 +22,8 @@ public class BoatDTO {
         this.model = boat.getModel();
         this.name = boat.getName();
         this.image = boat.getImage();
-        this.harbourDTO = new HarbourDTO(boat.getHarbour());
-        this.ownerDTOs = OwnerDTO.makeDTOSet(boat.getOwners());
+        this.harbour = new HarbourDTO(boat.getHarbour());
+        this.owners = OwnerDTO.makeDTOSet(boat.getOwners());
     }
 
     public BoatDTO(String brand, String model, String name, String image) {
@@ -53,12 +53,12 @@ public class BoatDTO {
         return image;
     }
 
-    public HarbourDTO getHarbourDTO() {
-        return harbourDTO;
+    public HarbourDTO getHarbour() {
+        return harbour;
     }
 
-    public Set<OwnerDTO> getOwnerDTOs() {
-        return ownerDTOs;
+    public Set<OwnerDTO> getOwners() {
+        return owners;
     }
 
     public static Set<BoatDTO> makeDTOSet(List<Boat> boatList) {

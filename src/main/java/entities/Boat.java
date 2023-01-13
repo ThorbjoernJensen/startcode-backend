@@ -30,10 +30,10 @@ public class Boat {
         this.model = boatDTO.getModel();
         this.name = boatDTO.getName();
         this.image = boatDTO.getImage();
-        this.harbour = new Harbour(boatDTO.getHarbourDTO().getId(),
-                boatDTO.getHarbourDTO().getName(),
-                boatDTO.getHarbourDTO().getAddress(),
-                boatDTO.getHarbourDTO().getCapacity());
+        this.harbour = new Harbour(boatDTO.getHarbour().getId(),
+                boatDTO.getHarbour().getName(),
+                boatDTO.getHarbour().getAddress(),
+                boatDTO.getHarbour().getCapacity());
     }
 
     public Boat(String brand, String model, String name, String image/*, Harbour harbour*/) {
