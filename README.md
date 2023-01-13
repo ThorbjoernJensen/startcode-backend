@@ -31,4 +31,4 @@ When you have got the project up and running, run the `main` method in [SetupTes
   - package
   - tick tables to include
   - open tables to see columns and add the ones with mapped type: Collection<SomeEntity> and SomeEntity
-  - click OK.
+  - click OK."# test-rep" 
