@@ -4,8 +4,8 @@ Content-Type: application/json
 accept: application/json
 
 {
-"username": "user_admin",
-"password": "DQ123456"
+  "username": "user_admin",
+  "password": "DQ123456"
 }
 
 ### test welcome message localhost
@@ -17,6 +17,7 @@ GET https://dengamlegymnastiksal.dk/tomcat/boats/api/boat
 ### get owners from localhost
 GET http://localhost:8080/boats/api/boat/owner
 x-access-token: eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyX2FkbWluIiwicm9sZXMiOiJhZG1pbix1c2VyIiwiZXhwIjoxNjcxNjU3MTQyLCJpYXQiOjE2NzE2NTUzNDIsImlzc3VlciI6InNlbWVzdGVyc3RhcnRjb2RlLWRhdDMiLCJ1c2VybmFtZSI6InVzZXJfYWRtaW4ifQ.sdhtBtl29PrE9oHfDf7VRYKDYWJHgDWR5lXqt-nKYdY
+
 ### get owners from deployed
 GET https://dengamlegymnastiksal.dk/tomcat/boats/api/boat/owner
 
@@ -47,11 +48,11 @@ Content-Type: application/json
 accept: application/json
 
 {
-  "brand": "Speeder14",
+  "brand": "Speeder17",
   "model": "luxus",
   "name": "Postspeederen2",
   "image": "https://pionerboat.com/wp-content/uploads/2022/05/Pioner15_Product_image_shop_nov2021.jpg",
-  "harbourDTO": {
+  "harbour": {
     "id": 1,
     "name": "Melsted Havn",
     "address": "Melsted byvej",
@@ -75,4 +76,38 @@ accept: application/json
     "address": "Melsted byvej",
     "capacity": 8
   }
+}
+
+### edit boat localhost
+PUT http://localhost:8080/boats/api/boat/boat/9
+Content-Type: application/json
+accept: application/json
+
+{
+  "id": "3",
+  "brand": "Torpedobåd",
+  "model": "luxus",
+  "name": "Postspeederen2",
+  "image": "https://pionerboat.com/wp-content/uploads/2022/05/Pioner15_Product_image_shop_nov2021.jpg",
+  "harbour": {
+    "id": 2,
+    "name": "Melsted Havn",
+    "address": "Melsted byvej",
+    "capacity": 8
+  },
+  "owners": [
+    {
+      "id": 1,
+      "name": "Skipper Bente",
+      "address": "Persillehaven 38",
+      "phone": "40404040"
+
+    },
+    {
+      "id": 2,
+      "name": "Skipper Bænt",
+      "address": "Persillehaven 40",
+      "phone": "38383838"
+    }
+  ]
 }

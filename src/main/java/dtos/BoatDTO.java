@@ -12,7 +12,7 @@ public class BoatDTO {
     private String name;
     private String image;
     private HarbourDTO harbour;
-    private Set<OwnerDTO> owners;
+    private Set<OwnerDTO> owners= new HashSet<>();
 
     public BoatDTO(Boat boat) {
         if (boat.getId() != null) {

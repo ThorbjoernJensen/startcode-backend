@@ -10,6 +10,7 @@ import entities.Owner;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.TypedQuery;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -130,6 +131,7 @@ public class APIFacade {
     }
 
     public BoatDTO createBoat(BoatDTO newBoatDTO) {
+        System.out.println("fra facade create boat: " + newBoatDTO.getOwners());
         Boat newBoat = new Boat(newBoatDTO);
         Harbour harbour;
         EntityManager em = emf.createEntityManager();
@@ -154,7 +156,46 @@ public class APIFacade {
 //        return newPerson;
 
     }
+
+    public BoatDTO editBoat(BoatDTO newBoatDTO) {
+        EntityManager em = getEntityManager();
+        Boat oldBoat;
+        Harbour newHarbour;
+        Set<OwnerDTO> newOwnerDTOs = newBoatDTO.getOwners();
+        Set<Owner> newOwners = new HashSet<>();
+
+        try {
+            em.getTransaction().begin();
+            oldBoat = em.find(Boat.class, newBoatDTO.getId());
+
+            oldBoat.setBrand(newBoatDTO.getBrand());
+            oldBoat.setName(newBoatDTO.getName());
+            oldBoat.setImage(newBoatDTO.getImage());
+            oldBoat.setModel(newBoatDTO.getModel());
+
+//         Frontend er implementeret så man i princippet (via dropdowns) kun kan vælge havne som findes i backend.
+            newHarbour = em.find(Harbour.class, newBoatDTO.getHarbour().getId());
+            oldBoat.setHarbour(newHarbour);
+
+//            Tilsvarende kan der fra frontend kun vælges owners der er i db, og update består i at erstatte bådens set af owners
+//          der oprettes en managed set af owners
+            newOwnerDTOs.forEach(ownerDTO -> newOwners.add(em.find(Owner.class, ownerDTO.getId())));
+
+//            em.detach(oldBoat);
+            oldBoat.getOwners().clear();
+            for (Owner o : newOwners) {
+                oldBoat.addOwner(o);
+            }
+            em.merge(oldBoat);
+            em.getTransaction().commit();
+        } finally {
+            em.close();
+        }
+        return new BoatDTO(oldBoat);
+    }
 }
+
+
 
 
 

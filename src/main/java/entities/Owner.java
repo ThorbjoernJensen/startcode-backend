@@ -1,5 +1,7 @@
 package entities;
 
+import dtos.OwnerDTO;
+
 import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
@@ -24,6 +26,14 @@ public class Owner {
         this.name = name;
         this.address = address;
         this.phone = phone;
+    }
+
+    public Owner(OwnerDTO ownerDTO) {
+        if(ownerDTO.getId()!= null)
+        {this.id = ownerDTO.getId();}
+        this.name = ownerDTO.getName();
+        this.address = ownerDTO.getAddress();
+        this.phone = ownerDTO.getPhone();
     }
 
     public Long getId() {
@@ -67,11 +77,12 @@ public class Owner {
         boat.getOwners().add(this);
     }
 
-//    public void addHobbytoHobbySet(Hobby hobby){
-//        this.hobbySet.add(hobby);
-//        hobby.getPersonSet().add(this);
-//
-//    }
+    public void removeBoat(Boat boat) {
+        this.boats.remove(boat);
+        boat.getOwners().remove(this);
+    }
+
+
 
 
 }

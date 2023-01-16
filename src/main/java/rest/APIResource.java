@@ -100,6 +100,25 @@ public class APIResource {
 
     }
 
+    @PUT
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Path("boat/{id}")
+    public String editBoat(@PathParam("id") String id, String boatJSON) {
+        BoatDTO newBoatDTO = GSON.fromJson(boatJSON, BoatDTO.class);
+//        TODO validate input
+        BoatDTO editedBoatDTO = FACADE.editBoat(newBoatDTO);
+        return GSON.toJson(editedBoatDTO);
+    }
+
+
+//            PUT
+///tomcat/CA1/api/ca1/person/{id}
+//    person (2)
+//    person (2)
+//(e4)
+//    DELETE
+///tomcat/CA1/api/ca1/person/{id}
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)

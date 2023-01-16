@@ -26,6 +26,9 @@ public class Boat {
     }
 
     public Boat(BoatDTO boatDTO) {
+        if(boatDTO.getId() != null){
+            this.id = boatDTO.getId();
+        }
         this.brand = boatDTO.getBrand();
         this.model = boatDTO.getModel();
         this.name = boatDTO.getName();
@@ -34,6 +37,13 @@ public class Boat {
                 boatDTO.getHarbour().getName(),
                 boatDTO.getHarbour().getAddress(),
                 boatDTO.getHarbour().getCapacity());
+//        Ifølge domænediagram må owners ikke være tom, men...
+        if(boatDTO.getOwners() != null) {
+            boatDTO.getOwners().forEach(ownerDTO -> {
+                this.addOwner(new Owner(ownerDTO.getName(), ownerDTO.getAddress(), ownerDTO.getPhone()));
+
+            });
+        }
     }
 
     public Boat(String brand, String model, String name, String image/*, Harbour harbour*/) {
