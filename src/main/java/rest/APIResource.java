@@ -37,6 +37,17 @@ public class APIResource {
         return "{\"msg\":\"Hello boatsman\"}";
     }
 
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("populate")
+//    @RolesAllowed({"admin"})
+    public String populateDB() {
+        populator.populate();
+        return "{\"msg\":\"DB populated\"}";
+
+    }
+
+
 //    @GET
 //    @Produces(MediaType.APPLICATION_JSON)
 //    @Path("owner")
@@ -107,15 +118,6 @@ public class APIResource {
 //        return GSON.toJson(editedBoatDTO);
 //    }
 //
-//    @GET
-//    @Produces(MediaType.APPLICATION_JSON)
-//    @Path("populate")
-////    @RolesAllowed({"admin"})
-//    public String populateDB() {
-//        populator.populate();
-//        return "{\"msg\":\"DB populated\"}";
-//
-//    }
 
 
 }

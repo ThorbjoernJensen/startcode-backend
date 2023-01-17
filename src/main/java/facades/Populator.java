@@ -5,8 +5,11 @@
  */
 package facades;
 
+import entities.Role;
+import entities.User;
 import utils.EMF_Creator;
 
+import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 
 /**
@@ -20,24 +23,24 @@ public class Populator {
 
     public static void populate() {
 
-//        EntityManager em = emf.createEntityManager();
-//        //Create test users
-//        User user = new User("user", "As123456");
-//        User admin = new User("admin", "JK123456");
-//        User both = new User("user_admin", "DQ123456");
-//
-//        em.getTransaction().begin();
-//        Role userRole = new Role("user");
-//        Role adminRole = new Role("admin");
-//        user.addRole(userRole);
-//        admin.addRole(adminRole);
-//        both.addRole(userRole);
-//        both.addRole(adminRole);
-//        em.persist(userRole);
-//        em.persist(adminRole);
-//        em.persist(user);
-//        em.persist(admin);
-//        em.persist(both);
+        EntityManager em = emf.createEntityManager();
+        //Create test users
+        User user = new User("user", "As123456");
+        User admin = new User("admin", "JK123456");
+        User both = new User("user_admin", "DQ123456");
+
+        em.getTransaction().begin();
+        Role userRole = new Role("user");
+        Role adminRole = new Role("admin");
+        user.addRole(userRole);
+        admin.addRole(adminRole);
+        both.addRole(userRole);
+        both.addRole(adminRole);
+        em.persist(userRole);
+        em.persist(adminRole);
+        em.persist(user);
+        em.persist(admin);
+        em.persist(both);
 //
 ////        Add owners
 //        Owner o1 = new Owner("Skipper Bænt", "Persillehaven 40", "38383838");
@@ -72,16 +75,16 @@ public class Populator {
 //        em.persist(h2);
 //        em.persist(h3);
 //
-//        em.getTransaction().commit();
-//        System.out.println("PW: " + user.getUserPass());
-//        System.out.println("Testing user with OK password: " + user.verifyPassword("As123456"));
-//        System.out.println("Testing user with wrong password: " + user.verifyPassword("test1"));
-//        System.out.println("Created TEST Users");
-//
+        em.getTransaction().commit();
+        System.out.println("PW: " + user.getUserPass());
+        System.out.println("Testing user with OK password: " + user.verifyPassword("As123456"));
+        System.out.println("Testing user with wrong password: " + user.verifyPassword("test1"));
+        System.out.println("Created TEST Users");
+
 ////        Create dummy -owners
 ////        FACADE.create(new Owner("Preben"));
 ////        FACADE.create(new Owner("Poul"));
-//        em.close();
+        em.close();
     }
 
 }
