@@ -174,7 +174,7 @@ public class APIResourceTest {
     void welcomeGreeting() {
         given()
                 .contentType("application/json")
-                .when().get("/boat")
+                .when().get("/boatstuesday")
                 .then().statusCode(200)
                 .assertThat()
                 .body("msg", equalTo("Hello boatsman"));
